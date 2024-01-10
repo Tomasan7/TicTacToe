@@ -1,0 +1,81 @@
+*
+{
+    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body
+{
+    color: #757575;
+}
+
+a
+{
+    text-decoration: none;
+}
+
+.button
+{
+    padding: 8px;
+    display: inline-flex;
+    flex-direction: row;
+    column-gap: 5px;
+    justify-content: space-evenly;
+    color: white;
+    border-style: none;
+    background-color: cornflowerblue;
+    box-shadow: 3px 3px rgba(117, 117, 117, 0.54);
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.button:hover
+{
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px rgba(117, 117, 117, 0.54);
+}
+
+.button:active
+{
+    transform: translate(3px, 3px);
+    box-shadow: none;
+}
+
+.text-field, .text-field:active
+{
+    outline: none;
+    padding: 4px;
+    font-weight: 600;
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 2px;
+    border-color: #757575;
+    color: #757575;
+}
+
+.text-field::placeholder
+{
+    font-weight: 300;
+}
+
+.title
+{
+    text-align: center;
+    font-size: 3rem;
+}
+
+.ttt-title span:nth-child(1)
+{
+    color: #ff6767;
+}
+.ttt-title span:nth-child(2)
+{
+    color: #9ce873;
+}
+.ttt-title span:nth-child(3)
+{
+    color: #507ee7;
+}

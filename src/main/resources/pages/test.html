@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid Canvas</title>
+    <style>
+        /* Add some basic styling to the canvas */
+        canvas {
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="gridCanvas" width="400" height="400"></canvas>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const canvas = document.getElementById("gridCanvas");
+        const context = canvas.getContext("2d");
+
+        // Set the size of each cell and the number of rows and columns
+        const cellSize = 20;
+        const rows = 20;
+        const cols = 20;
+
+        // Initialize a 2D array to store the state of each cell (black or white)
+        const grid = new Array(rows).fill(null).map(() => new Array(cols).fill(false));
+
+        // Function to draw the initial grid
+        function drawGrid() {
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < cols; j++) {
+                    context.fillStyle = grid[i][j] ? "#000" : "#FFF";
+                    context.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+                }
+            }
+        }
+
+        // Function to handle mouse clicks on the canvas
+        function handleClick(event) {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = event.clientX - rect.left;
+            const mouseY = event.clientY - rect.top;
+
+            const clickedRow = Math.floor(mouseY / cellSize);
+            const clickedCol = Math.floor(mouseX / cellSize);
+
+            // Toggle the state of the clicked cell (black to white or white to black)
+            grid[clickedRow][clickedCol] = !grid[clickedRow][clickedCol];
+
+            // Redraw the grid after the cell state is toggled
+            drawGrid();
+        }
+
+        // Add a click event listener to the canvas
+        canvas.addEventListener("click", handleClick);
+
+        // Initial draw of the grid
+        drawGrid();
+    });
+</script>
+
+</body>
+</html>
