@@ -3,7 +3,7 @@ package me.tomasan7.tictactoe.server.game.packet.client
 import kotlinx.serialization.json.Json
 import me.tomasan7.tictactoe.server.game.packet.InvalidPacketFormatException
 import me.tomasan7.tictactoe.server.game.packet.InvalidPacketIdException
-import me.tomasan7.tictactoe.server.game.packet.client.packet.ClientCreateGamePacket
+import me.tomasan7.tictactoe.server.game.packet.client.packet.*
 import me.tomasan7.tictactoe.server.util.getSerializableClassSerializer
 
 class JsonClientPacketDeserializer : ClientPacketDeserializer
@@ -57,6 +57,11 @@ class JsonClientPacketDeserializer : ClientPacketDeserializer
 
     private fun registerPackets()
     {
-        registerPacket(0, ClientCreateGamePacket::class.java)
+        registerPacket(ClientCreateGamePacket.PACKET_ID, ClientCreateGamePacket::class.java)
+        registerPacket(ClientJoinGamePacket.PACKET_ID, ClientJoinGamePacket::class.java)
+        registerPacket(ClientJoinRandomGamePacket.PACKET_ID, ClientJoinRandomGamePacket::class.java)
+        registerPacket(ClientPlaceSymbolPacket.PACKET_ID, ClientPlaceSymbolPacket::class.java)
+        registerPacket(ClientReadyPacket.PACKET_ID, ClientReadyPacket::class.java)
+        registerPacket(ClientSetPlayerDataPacket.PACKET_ID, ClientSetPlayerDataPacket::class.java)
     }
 }
