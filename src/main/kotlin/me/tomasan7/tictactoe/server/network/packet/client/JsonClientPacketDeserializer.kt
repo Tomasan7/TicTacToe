@@ -22,7 +22,7 @@ class JsonClientPacketDeserializer : ClientPacketDeserializer
      */
     override fun deserializePacket(serializedPacket: String): ClientPacket
     {
-        val split = serializedPacket.split("\n", limit = 2) /* limit 2, so the data can be on more lines */
+        val split = serializedPacket.split("\n", limit = 2) /* limit 2, so it is only divided into packet id and packet data */
 
         if (split.size != 2)
             throw InvalidPacketFormatException(
