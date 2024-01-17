@@ -141,15 +141,16 @@ Joins a random public game.
 Tells the client that he has successfully joined a game.
 Contains the game configuration, so the client can set up the game properly.
 
-| field      | type | description                                                                  |
-|------------|------|------------------------------------------------------------------------------|
-| width      | int  | width of the game area                                                       |
-| height     | int  | height of the game area                                                      |
-| winLength  | int  | amount of symbols in row/column/diagonal needed ti win                       |
-| symbolSize | int  | the size of players' symbols (it is a square, so this is its side length)    |
-| maxPlayers | int  | max amount of players allowed to join the game                               |
-| playerId   | int  | the receiving player's id                                                    |
-| ownerId    | int  | id of the player, that is the owner of the game (most often the game create) |
+| field      | type   | description                                                                  |
+|------------|--------|------------------------------------------------------------------------------|
+| gameCode   | string | the game's code                                                              |
+| width      | int    | width of the game area                                                       |
+| height     | int    | height of the game area                                                      |
+| winLength  | int    | amount of symbols in row/column/diagonal needed ti win                       |
+| symbolSize | int    | the size of players' symbols (it is a square, so this is its side length)    |
+| maxPlayers | int    | max amount of players allowed to join the game                               |
+| playerId   | int    | the receiving player's new id                                                |
+| ownerId    | int    | id of the player, that is the owner of the game (most often the game create) |
 
 #### In-Game Preparation State
 
@@ -157,25 +158,25 @@ Contains the game configuration, so the client can set up the game properly.
 Sent to all players when a new player joins the game.
 Should be followed by an initial [ServerSetPlayerData](#serversetplayerdata-7) packet.
 
-| field | type | description         |
-|-------|------|---------------------|
-| id    | int  | the new player's id |
+| field    | type | description         |
+|----------|------|---------------------|
+| playerId | int  | the new player's id |
 
 ##### ServerRemovePlayer (5)
 Sent to all players when a player leaves the game.
 
-| field | type | description             |
-|-------|------|-------------------------|
-| id    | int  | the leaving player's id |
+| field    | type | description             |
+|----------|------|-------------------------|
+| playerId | int  | the leaving player's id |
 
 ##### ClientSetPlayerData (6)
 Sent to the server when a player changes his name, color or symbol.
 
-| field  | type    | description                                           |
-|--------|---------|-------------------------------------------------------|
-| name   | string? | the player's new name. Missing if it hasn't changed   |
-| color  | int?    | the player's new color. Missing if it hasn't changed  |
-| symbol | symbol? | the player's new symbol. Missing if it hasn't changed |
+| field  | type    | description                                                        |
+|--------|---------|--------------------------------------------------------------------|
+| name   | string? | the player's new name. Missing if it hasn't changed                |
+| color  | int?    | the player's new color as an RGB int. Missing if it hasn't changed |
+| symbol | symbol? | the player's new symbol. Missing if it hasn't changed              |
 
 ##### ServerSetPlayerData (7)
 Sent to all players when a player changes his name, color or symbol.
@@ -210,9 +211,9 @@ That can happen, for example when they have a name, color or symbol same as anot
 ##### ServerPlayerReady (10)
 Sent to all players when a player is (un)ready.
 
-| field | type | description                                                  |
-|-------|------|--------------------------------------------------------------|
-| id    | int  | the player's id                                              |
+| field    | type | description                                                  |
+|----------|------|--------------------------------------------------------------|
+| playerId | int  | the player's id                                              |
 
 #### In-Game State
 
@@ -264,4 +265,6 @@ Sent to all players when the game ends. Either by a player winning, or by a draw
 ##### ServerGameClose (16)
 Sent to all players when the game has closed, so the clients should transition from the game.
 
-`NO FIELDS`
+| field  | type    | description             |
+|--------|---------|-------------------------|
+| reason | string? | why is the game closing |
