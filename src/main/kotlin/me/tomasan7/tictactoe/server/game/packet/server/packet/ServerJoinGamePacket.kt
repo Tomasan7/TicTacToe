@@ -1,0 +1,18 @@
+package me.tomasan7.tictactoe.server.game.packet.server.packet
+
+import kotlinx.serialization.Serializable
+import me.tomasan7.tictactoe.server.game.packet.server.ServerPacket
+
+@Serializable
+data class ServerJoinGamePacket(
+    val width: Int,
+    val height: Int,
+    val winLength: Int,
+    val symbolSize: Int,
+    val maxPlayers: Int,
+    val playerId: Int,
+    val ownerId: Int
+) : ServerPacket
+{
+    override val id = 3
+}
