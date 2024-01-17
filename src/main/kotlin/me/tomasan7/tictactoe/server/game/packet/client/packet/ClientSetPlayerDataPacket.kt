@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import me.tomasan7.tictactoe.server.game.packet.client.ClientPacket
 
 @Serializable
-data class ClientSetPlayerData(
+data class ClientSetPlayerDataPacket(
     val name: String?,
     val color: Int?,
     val symbol: String?
