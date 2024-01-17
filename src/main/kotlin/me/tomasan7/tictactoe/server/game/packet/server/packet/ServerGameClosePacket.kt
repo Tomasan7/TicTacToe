@@ -8,5 +8,10 @@ data class ServerGameClosePacket(
     val reason: String
 ) : ServerPacket
 {
-    override val id = 16
+    override val id = PACKET_ID
+
+    companion object
+    {
+        const val PACKET_ID = 16
+    }
 }

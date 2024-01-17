@@ -1,14 +1,10 @@
 package me.tomasan7.tictactoe.server.game.packet.client
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import me.tomasan7.tictactoe.server.game.packet.InvalidPacketFormatException
 import me.tomasan7.tictactoe.server.game.packet.InvalidPacketIdException
 import me.tomasan7.tictactoe.server.game.packet.client.packet.ClientCreateGamePacket
 import me.tomasan7.tictactoe.server.util.getSerializableClassSerializer
-import kotlin.reflect.full.companionObject
-import kotlin.reflect.full.companionObjectInstance
-import kotlin.reflect.full.functions
 
 class JsonClientPacketDeserializer : ClientPacketDeserializer
 {

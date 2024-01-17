@@ -6,5 +6,6 @@ import me.tomasan7.tictactoe.server.game.packet.client.ClientPacket
 @Serializable
 data object ClientJoinRandomGamePacket: ClientPacket
 {
-    override val id = 2
+    const val PACKET_ID = 2
+    override val id = PACKET_ID
 }

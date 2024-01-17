@@ -8,7 +8,7 @@ data class ServerStartGamePacket(
     val playerOrder: Array<Int>
 ) : ServerPacket
 {
-    override val id = 11
+    override val id = PACKET_ID
 
     override fun equals(other: Any?): Boolean
     {
@@ -28,5 +28,10 @@ data class ServerStartGamePacket(
         var result = playerOrder.contentHashCode()
         result = 31 * result + id
         return result
+    }
+
+    companion object
+    {
+        const val PACKET_ID = 11
     }
 }

@@ -14,5 +14,10 @@ data class ServerJoinGamePacket(
     val ownerId: Int
 ) : ServerPacket
 {
-    override val id = 3
+    override val id = PACKET_ID
+
+    companion object
+    {
+        const val PACKET_ID = 3
+    }
 }

@@ -8,5 +8,10 @@ data class ServerPlayerTurnPacket(
     val playerId: Int
 ) : ServerPacket
 {
-    override val id = 12
+    override val id = PACKET_ID
+
+    companion object
+    {
+        const val PACKET_ID = 12
+    }
 }

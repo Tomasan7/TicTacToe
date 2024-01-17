@@ -9,5 +9,10 @@ data class ClientPlaceSymbolPacket(
     val y: Int
 ) : ClientPacket
 {
-    override val id = 13
+    override val id = PACKET_ID
+
+    companion object
+    {
+        const val PACKET_ID = 13
+    }
 }

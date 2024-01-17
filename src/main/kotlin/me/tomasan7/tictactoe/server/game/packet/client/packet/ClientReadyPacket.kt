@@ -8,5 +8,10 @@ data class ClientReadyPacket(
     val value: Boolean
 ) : ClientPacket
 {
-    override val id = 8
+    override val id = PACKET_ID
+
+    companion object
+    {
+        const val PACKET_ID = 8
+    }
 }

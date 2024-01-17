@@ -12,5 +12,10 @@ data class ClientCreateGamePacket(
     val public: Boolean
 ) : ClientPacket
 {
-    override val id = 0
+    override val id = PACKET_ID
+
+    companion object
+    {
+        const val PACKET_ID = 0
+    }
 }

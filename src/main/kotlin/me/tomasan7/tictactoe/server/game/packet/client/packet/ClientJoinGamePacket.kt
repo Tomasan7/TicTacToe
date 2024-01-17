@@ -8,5 +8,10 @@ data class ClientJoinGamePacket(
     val gameCode: String
 ) : ClientPacket
 {
-    override val id = 1
+    override val id = PACKET_ID
+
+    companion object
+    {
+        const val PACKET_ID = 1
+    }
 }

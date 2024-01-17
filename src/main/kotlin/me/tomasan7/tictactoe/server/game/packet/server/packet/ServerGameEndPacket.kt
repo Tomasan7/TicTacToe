@@ -8,5 +8,10 @@ data class ServerGameEndPacket(
     val winnerId: Int?
 ) : ServerPacket
 {
-    override val id = 15
+    override val id = PACKET_ID
+
+    companion object
+    {
+        const val PACKET_ID = 15
+    }
 }

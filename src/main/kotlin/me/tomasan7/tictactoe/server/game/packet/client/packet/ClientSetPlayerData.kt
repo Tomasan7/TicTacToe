@@ -10,5 +10,10 @@ data class ClientSetPlayerData(
     val symbol: String?
 ) : ClientPacket
 {
-    override val id = 6
+    override val id = PACKET_ID
+
+    companion object
+    {
+        const val PACKET_ID = 6
+    }
 }

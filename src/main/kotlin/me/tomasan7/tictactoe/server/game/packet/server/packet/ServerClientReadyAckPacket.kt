@@ -9,5 +9,10 @@ data class ServerClientReadyAckPacket(
     val reason: String?
 ) : ServerPacket
 {
-    override val id = 9
+    override val id = PACKET_ID
+
+    companion object
+    {
+        const val PACKET_ID = 9
+    }
 }

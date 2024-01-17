@@ -8,5 +8,10 @@ data class ServerRemovePacket(
     val playerId: Int
 ) : ServerPacket
 {
-    override val id = 5
+    override val id = PACKET_ID
+
+    companion object
+    {
+        const val PACKET_ID = 5
+    }
 }
