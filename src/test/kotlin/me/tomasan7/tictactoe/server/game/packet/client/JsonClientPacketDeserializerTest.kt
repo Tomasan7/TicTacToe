@@ -7,7 +7,7 @@ import kotlin.test.Test
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class JsonClientPacketDeserializerTest
 {
-    val deserializer = JsonClientPacketDeserializer()
+    val deserializer = me.tomasan7.tictactoe.server.network.packet.client.JsonClientPacketDeserializer()
 
     @Test
     fun testDeserializePacket()
