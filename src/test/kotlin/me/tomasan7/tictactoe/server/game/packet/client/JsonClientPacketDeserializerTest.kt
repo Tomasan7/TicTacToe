@@ -1,6 +1,6 @@
 package me.tomasan7.tictactoe.server.game.packet.client
 
-import me.tomasan7.tictactoe.server.game.packet.client.packet.ClientCreateGamePacket
+import me.tomasan7.tictactoe.server.network.packet.client.packet.ClientCreateGamePacket
 import org.junit.jupiter.api.TestInstance
 import kotlin.test.Test
 
