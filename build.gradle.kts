@@ -43,6 +43,8 @@ dependencies {
     implementation("io.ktor:ktor-server-netty-jvm")
     implementation("ch.qos.logback:logback-classic:$logback_version")
 
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0-RC2")
+
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation(kotlin("test"))
 }
