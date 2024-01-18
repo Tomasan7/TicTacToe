@@ -30,6 +30,12 @@ tasks.test {
     useJUnitPlatform()
 }
 
+tasks.compileKotlin {
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+}
+
 dependencies {
     implementation("io.ktor:ktor-server-default-headers-jvm")
     implementation("io.ktor:ktor-server-forwarded-header-jvm")
