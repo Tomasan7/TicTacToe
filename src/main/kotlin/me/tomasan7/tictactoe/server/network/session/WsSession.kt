@@ -39,13 +39,15 @@ class WsSession(
             }
             catch (e: InvalidPacketFormatException)
             {
-                logger.warn("Received an invalid packet format from $remoteHost: \n'$frameText'")
-                return
+                return logger.warn("Received an invalid packet format from $remoteHost: \n'$frameText'")
             }
             catch (e: InvalidPacketIdException)
             {
-                logger.warn("Received a packet with an invalid id from $remoteHost: \n'$frameText'")
-                return
+                return logger.warn("Received a packet with an invalid id from $remoteHost: \n'$frameText'")
+            }
+            catch (e: Exception)
+            {
+                return logger.warn("Failed to parse packet from $remoteHost. ${e.message}: \n'$frameText'")
             }
 
             _incomingPacketsChannel.send(packet)
