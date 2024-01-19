@@ -57,7 +57,7 @@ class JsonClientPacketDeserializer : ClientPacketDeserializer
     private fun deserializePacket(packetClass: KClass<out ClientPacket>, serializedPacket: String): ClientPacket
     {
         val serializer = getSerializableClassSerializer(packetClass)
-            ?: throw IllegalArgumentException("No serializer found for ${packetClass::class.java.name}")
+            ?: throw IllegalArgumentException("No serializer found for ${packetClass.java.name}")
 
         return json.decodeFromString(serializer, serializedPacket)
     }
