@@ -5,7 +5,7 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import kotlin.test.*
-import me.tomasan7.tictactoe.plugins.configureRouting
+import me.tomasan7.tttweb.plugins.configureRouting
 
 class ApplicationTest
 {

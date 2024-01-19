@@ -1,4 +1,4 @@
-package me.tomasan7.tictactoe.plugins
+package me.tomasan7.tttweb.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.plugins.defaultheaders.*
