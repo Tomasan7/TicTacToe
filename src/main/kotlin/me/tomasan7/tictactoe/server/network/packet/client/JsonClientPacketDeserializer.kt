@@ -9,7 +9,7 @@ import kotlin.reflect.KClass
 
 class JsonClientPacketDeserializer : ClientPacketDeserializer
 {
-    private val packetMap = mutableMapOf<Int, (serialized: String) -> ClientPacket>()
+    private val packetMap = mutableMapOf<Int, (serializedPacketData: String) -> ClientPacket>()
     private val json = Json {}
 
     init
@@ -46,15 +46,15 @@ class JsonClientPacketDeserializer : ClientPacketDeserializer
 
     private fun registerPacket(packetId: Int, packetClass: KClass<out ClientPacket>)
     {
-        val packetFun = { serializedPacket: String -> deserializePacket(packetClass, serializedPacket) }
+        val parserFun = { serializedPacketData: String -> deserializePacketData(packetClass, serializedPacketData) }
 
         if (packetMap.containsKey(packetId))
             throw IllegalArgumentException("Packet id $packetId is already registered")
 
-        packetMap[packetId] = packetFun
+        packetMap[packetId] = parserFun
     }
 
-    private fun deserializePacket(packetClass: KClass<out ClientPacket>, serializedPacket: String): ClientPacket
+    private fun deserializePacketData(packetClass: KClass<out ClientPacket>, serializedPacket: String): ClientPacket
     {
         val serializer = getSerializableClassSerializer(packetClass)
             ?: throw IllegalArgumentException("No serializer found for ${packetClass.java.name}")
