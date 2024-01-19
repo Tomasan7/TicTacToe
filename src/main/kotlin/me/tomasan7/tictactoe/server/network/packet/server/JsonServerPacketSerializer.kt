@@ -9,7 +9,7 @@ class JsonServerPacketSerializer : ServerPacketSerializer
 
     override fun serializePacket(packet: ServerPacket): String
     {
-        val serializer = getSerializableClassSerializer(packet::class.java)
+        val serializer = getSerializableClassSerializer(packet::class)
             ?: throw IllegalArgumentException("No serializer found for ${packet::class.java.name}")
 
         return packet.id.toString() + "\n" + json.encodeToString(serializer, packet)

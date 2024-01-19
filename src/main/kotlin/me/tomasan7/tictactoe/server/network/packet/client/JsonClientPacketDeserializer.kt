@@ -5,6 +5,7 @@ import me.tomasan7.tictactoe.server.network.packet.InvalidPacketFormatException
 import me.tomasan7.tictactoe.server.network.packet.InvalidPacketIdException
 import me.tomasan7.tictactoe.server.network.packet.client.packet.*
 import me.tomasan7.tictactoe.server.util.getSerializableClassSerializer
+import kotlin.reflect.KClass
 
 class JsonClientPacketDeserializer : ClientPacketDeserializer
 {
@@ -43,7 +44,7 @@ class JsonClientPacketDeserializer : ClientPacketDeserializer
     }
 
 
-    private fun registerPacket(packetId: Int, packetClass: Class<out ClientPacket>)
+    private fun registerPacket(packetId: Int, packetClass: KClass<out ClientPacket>)
     {
         val packetFun = { serializedPacket: String -> deserializePacket(packetClass, serializedPacket) }
 
@@ -53,7 +54,7 @@ class JsonClientPacketDeserializer : ClientPacketDeserializer
         packetMap[packetId] = packetFun
     }
 
-    private fun deserializePacket(packetClass: Class<out ClientPacket>, serializedPacket: String): ClientPacket
+    private fun deserializePacket(packetClass: KClass<out ClientPacket>, serializedPacket: String): ClientPacket
     {
         val serializer = getSerializableClassSerializer(packetClass)
             ?: throw IllegalArgumentException("No serializer found for ${packetClass::class.java.name}")
@@ -63,11 +64,11 @@ class JsonClientPacketDeserializer : ClientPacketDeserializer
 
     private fun registerPackets()
     {
-        registerPacket(ClientCreateGamePacket.PACKET_ID, ClientCreateGamePacket::class.java)
-        registerPacket(ClientJoinGamePacket.PACKET_ID, ClientJoinGamePacket::class.java)
-        registerPacket(ClientJoinRandomGamePacket.PACKET_ID, ClientJoinRandomGamePacket::class.java)
-        registerPacket(ClientPlaceSymbolPacket.PACKET_ID, ClientPlaceSymbolPacket::class.java)
-        registerPacket(ClientReadyPacket.PACKET_ID, ClientReadyPacket::class.java)
-        registerPacket(ClientSetPlayerDataPacket.PACKET_ID, ClientSetPlayerDataPacket::class.java)
+        registerPacket(ClientCreateGamePacket.PACKET_ID, ClientCreateGamePacket::class)
+        registerPacket(ClientJoinGamePacket.PACKET_ID, ClientJoinGamePacket::class)
+        registerPacket(ClientJoinRandomGamePacket.PACKET_ID, ClientJoinRandomGamePacket::class)
+        registerPacket(ClientPlaceSymbolPacket.PACKET_ID, ClientPlaceSymbolPacket::class)
+        registerPacket(ClientReadyPacket.PACKET_ID, ClientReadyPacket::class)
+        registerPacket(ClientSetPlayerDataPacket.PACKET_ID, ClientSetPlayerDataPacket::class)
     }
 }
