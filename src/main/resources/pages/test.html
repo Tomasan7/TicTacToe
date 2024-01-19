@@ -3,64 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grid Canvas</title>
+    <title>Special TicTacToe Game Canvas</title>
     <style>
-        /* Add some basic styling to the canvas */
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
         canvas {
-            border: 1px solid #000;
+            border: 2px solid #000;
+            image-rendering: pixelated;
+            width: 200px;
+            height: 200px;
         }
     </style>
 </head>
 <body>
-
-<canvas id="gridCanvas" width="400" height="400"></canvas>
+<canvas id="gameCanvas" width="300" height="300"></canvas>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const canvas = document.getElementById("gridCanvas");
-        const context = canvas.getContext("2d");
+    class PixelCanvas {
+        constructor(canvas, width, height) {
+            this.width = width;
+            this.height = height;
+            this.canvas = canvas;
+            this.context = this.canvas.getContext('2d');
+            this.context.imageSmoothingEnabled = false;
+            this.context.webkitImageSmoothingEnabled = false;
+            this.context.msImageSmoothingEnabled = false;
+            this.canvas.style.imageRendering = 'pixelated';
+            this.canvas.width = width;
+            this.canvas.height = height;
+        }
 
-        // Set the size of each cell and the number of rows and columns
-        const cellSize = 20;
-        const rows = 20;
-        const cols = 20;
+        setPixel(x, y, color) {
+            const imageData = this.context.createImageData(1, 1);
+            const pixelData = imageData.data;
+            pixelData[0] = color[0];
+            pixelData[1] = color[1];
+            pixelData[2] = color[2];
+            pixelData[3] = 255;
+            this.context.putImageData(imageData, x, y);
+        }
+    }
 
-        // Initialize a 2D array to store the state of each cell (black or white)
-        const grid = new Array(rows).fill(null).map(() => new Array(cols).fill(false));
+    class GameCanvas extends PixelCanvas {
+        constructor(canvas, width, height, cellSize, dividerWidth) {
+            super(canvas, width * cellSize + (width - 1) * dividerWidth, height * cellSize + (height - 1) * dividerWidth);
 
-        // Function to draw the initial grid
-        function drawGrid() {
-            for (let i = 0; i < rows; i++) {
-                for (let j = 0; j < cols; j++) {
-                    context.fillStyle = grid[i][j] ? "#000" : "#FFF";
-                    context.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
-                }
+            this.width = width;
+            this.height = height;
+            this.cellSize = cellSize;
+            this.dividerWidth = dividerWidth;
+
+            // Draw the initial grid
+            this.drawGrid();
+        }
+
+        drawGrid() {
+            this.context.strokeStyle = '#000'; // Grid line color
+            this.context.lineWidth = this.dividerWidth;
+
+            for (let i = 1; i < this.width; i++) {
+                const x = i * (this.cellSize + this.dividerWidth) - this.dividerWidth / 2;
+                this.context.beginPath();
+                this.context.moveTo(x, 0);
+                this.context.lineTo(x, this.canvas.height);
+                this.context.stroke();
+            }
+
+            for (let i = 1; i < this.height; i++) {
+                const y = i * (this.cellSize + this.dividerWidth) - this.dividerWidth / 2;
+                this.context.beginPath();
+                this.context.moveTo(0, y);
+                this.context.lineTo(this.canvas.width, y);
+                this.context.stroke();
             }
         }
 
-        // Function to handle mouse clicks on the canvas
-        function handleClick(event) {
-            const rect = canvas.getBoundingClientRect();
-            const mouseX = event.clientX - rect.left;
-            const mouseY = event.clientY - rect.top;
+        symbolToImageData(symbol, color) {
+            // Create imageData to set pixel values
+            const imageData = this.context.createImageData(this.cellSize, this.cellSize);
+            const pixelData = imageData.data;
 
-            const clickedRow = Math.floor(mouseY / cellSize);
-            const clickedCol = Math.floor(mouseX / cellSize);
+            // Iterate through the symbol string and set pixel values
+            for (let i = 0; i < symbol.length; i++) {
+                const pixelIndex = i * 4; // Each pixel has 4 values (R, G, B, A)
+                if (symbol[i] === '1') {
+                    pixelData[pixelIndex] = color[0];     // Red component
+                    pixelData[pixelIndex + 1] = color[1]; // Green component
+                    pixelData[pixelIndex + 2] = color[2]; // Blue component
+                    pixelData[pixelIndex + 3] = 255;      // Alpha component (fully opaque)
+                } else {
+                    pixelData[pixelIndex + 3] = 0;        // Alpha component (fully transparent)
+                }
+            }
 
-            // Toggle the state of the clicked cell (black to white or white to black)
-            grid[clickedRow][clickedCol] = !grid[clickedRow][clickedCol];
-
-            // Redraw the grid after the cell state is toggled
-            drawGrid();
+            return imageData;
         }
 
-        // Add a click event listener to the canvas
-        canvas.addEventListener("click", handleClick);
+        drawSymbol(x, y, symbol, color) {
+            let imageData = this.symbolToImageData(symbol, color);
+            this.context.putImageData(imageData, x * (this.cellSize + this.dividerWidth), y * (this.cellSize + this.dividerWidth));
+        }
+    }
 
-        // Initial draw of the grid
-        drawGrid();
-    });
+    // Example usage
+    const canvas = document.getElementById('gameCanvas');
+    const gameCanvas = new GameCanvas(canvas, 3, 3, 30, 2);
+
+    // Draw an 'X' symbol at position (1, 1) with red color
+    gameCanvas.drawSymbol(1, 1, '100010001', [255, 0, 0]);
+
+    // Draw an 'O' symbol at position (2, 2) with blue color
+    gameCanvas.drawSymbol(2, 2, '011111110', [0, 0, 255]);
+
 </script>
-
 </body>
 </html>

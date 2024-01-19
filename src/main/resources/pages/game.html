@@ -5,6 +5,7 @@
     <title>TicTacToe | Game</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="game.css">
+    <script src="game.js"></script>
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,15 +18,31 @@
 </header>
 <div id="content">
     <aside id="sidebar">
-        <div class="player">
-
-        </div>
+        <player-card name="Player #1" symbol="101010101" color="[255, 0, 0]"></player-card>
     </aside>
     <canvas id="game-canvas"></canvas>
 </div>
 <footer>
     <p>Name: <span id="player-name" class="name">Tomasan7</span></p>
-    <p>Symbol: X <span id="player-symbol" class="symbol"></span> </p>
+    <p>Symbol: X <span id="player-symbol" class="symbol"></span></p>
 </footer>
 </body>
 </html>
+
+<template id="player-card-template">
+    <h2 id="name"></h2>
+    <canvas id="symbol-canvas"></canvas>
+    <style>
+        :host
+        {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            border: 1px solid #ddd;
+        }
+    </style>
+</template>
+
+<script>
+
+</script>

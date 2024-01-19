@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protocol Debugger</title>
+</head>
+<body>
+
+<h1>Protocol Debugger</h1>
+
+<!-- Form for sending packets -->
+<div>
+    <h2>Send Packet</h2>
+    <form id="sendForm">
+        <label for="packetType">Packet Type:</label>
+        <select id="packetType" onchange="updateFields()" required>
+            <option value="0">ClientCreateGame</option>
+            <option value="1">ClientJoinGame</option>
+            <option value="2">ClientJoinRandomGame</option>
+            <option value="6">ClientSetPlayerData</option>
+            <option value="8">ClientReady</option>
+            <option value="13">ClientPlaceSymbol</option>
+            <!-- Add other packet options here -->
+        </select>
+
+        <!-- Fields dynamically populated based on selected packet type -->
+        <div id="fields"></div>
+
+        <button type="button" onclick="sendPacket()">Send</button>
+    </form>
+</div>
+
+<!-- Display incoming packets -->
+<div>
+    <h2>Incoming Packets</h2>
+    <ul id="incomingPackets"></ul>
+</div>
+
+<script>
+    const socket = new WebSocket("ws://localhost/ws");
+
+    socket.onmessage = function (event)
+    {
+        displayIncomingPacket(event.data);
+    };
+
+    function updateFields()
+    {
+        const packetType = document.getElementById("packetType").value;
+        const fieldsDiv = document.getElementById("fields");
+        fieldsDiv.innerHTML = ""; // Clear previous fields
+
+        // Dynamically add fields based on the selected packet type
+        switch (packetType)
+        {
+            case "0": // ClientCreateGame
+                addField("width", "text", "Width:");
+                addField("height", "text", "Height:");
+                addField("winLength", "text", "Win Length:");
+                addField("symbolSize", "text", "Symbol Size:");
+                addField("maxPlayers", "text", "Max Players:");
+                addField("public", "checkbox", "Public:");
+                break;
+            case "1": // ClientJoinGame
+                addField("gameCode", "text", "Game Code:");
+                break;
+            case "6": // ClientSetPlayerData
+                addField("name", "text", "Name:");
+                addField("color", "text", "Color (RGB):");
+                addField("symbol", "text", "Symbol:");
+                break;
+            case "8": // ClientReady
+                addField("value", "checkbox", "Ready:");
+                break;
+            case "13": // ClientPlaceSymbol
+                addField("x", "text", "X Coordinate:");
+                addField("y", "text", "Y Coordinate:");
+                break;
+            // Add cases for other packet types here
+        }
+    }
+
+    function addField(fieldName, fieldType, label)
+    {
+        const fieldsDiv = document.getElementById("fields");
+        const inputField = document.createElement("input");
+        inputField.type = fieldType;
+        inputField.id = fieldName;
+        inputField.placeholder = label;
+        fieldsDiv.appendChild(inputField);
+    }
+
+    function sendPacket()
+    {
+        const packetType = document.getElementById("packetType").value;
+        const packetData = {}; // Collect data from form fields
+
+        // Add data fields based on the selected packet type
+        switch (packetType)
+        {
+            case "0": // ClientCreateGame
+                packetData.width = parseInt(document.getElementById("width").value);
+                packetData.height = parseInt(document.getElementById("height").value);
+                packetData.winLength = parseInt(document.getElementById("winLength").value);
+                packetData.symbolSize = parseInt(document.getElementById("symbolSize").value);
+                packetData.maxPlayers = parseInt(document.getElementById("maxPlayers").value);
+                packetData.public = document.getElementById("public").checked;
+                break;
+            case "1": // ClientJoinGame
+                packetData.gameCode = document.getElementById("gameCode").value;
+                break;
+            case "2": // ClientJoinRandomGame
+                // No additional fields for this packet type
+                break;
+            case "6": // ClientSetPlayerData
+                packetData.name = document.getElementById("name").value;
+                packetData.color = parseInt(document.getElementById("color").value);
+                packetData.symbol = document.getElementById("symbol").value;
+                break;
+            case "8": // ClientReady
+                packetData.value = document.getElementById("value").checked;
+                break;
+            case "13": // ClientPlaceSymbol
+                packetData.x = parseInt(document.getElementById("x").value);
+                packetData.y = parseInt(document.getElementById("y").value);
+                break;
+            // Add cases for other packet types here
+            default:
+                console.error("Unknown packet type:", packetType);
+        }
+
+        let id = parseInt(packetType)
+        let frame = `${id}\n${JSON.stringify(packetData)}`
+
+        socket.send(frame);
+    }
+
+    function displayIncomingPacket(packet)
+    {
+        const incomingPacketsList = document.getElementById("incomingPackets");
+        const listItem = document.createElement("li");
+        listItem.textContent = packet;
+        incomingPacketsList.appendChild(listItem);
+    }
+</script>
+
+</body>
+</html>

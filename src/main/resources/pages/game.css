@@ -11,13 +11,18 @@ body
     display: flex;
     flex-direction: row;
     flex: 1;
-    background-color: red;
 }
 
 #sidebar
 {
     width: 20%;
-    background-color: blue;
+    border-style: none solid none none;
+    border-width: 1px;
+}
+
+#sidebar player-card
+{
+    width: 100%;
 }
 
 #game-canvas
