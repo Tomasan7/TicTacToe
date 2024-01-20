@@ -6,9 +6,9 @@ import me.tomasan7.tictactoe.server.network.packet.server.ServerPacket
 @Serializable
 data class ServerSetPlayerDataPacket(
     val playerId: Int,
-    val name: String?,
-    val color: Int?,
-    val symbol: String?
+    val name: String? = null,
+    val color: Int? = null,
+    val symbol: String? = null
 ) : ServerPacket
 {
     override val id = PACKET_ID

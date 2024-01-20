@@ -5,8 +5,8 @@ import me.tomasan7.tictactoe.server.network.packet.client.ClientPacket
 
 @Serializable
 data class ClientSetPlayerDataPacket(
-    val name: String?,
-    val color: Int?,
+    val name: String? = null,
+    val color: Int? = null,
     val symbol: String?
 ) : ClientPacket
 {
