@@ -5,6 +5,7 @@ import me.tomasan7.tictactoe.server.network.packet.server.ServerPacket
 
 @Serializable
 data class ServerSetPlayerDataPacket(
+    val playerId: Int,
     val name: String?,
     val color: Int?,
     val symbol: String?
