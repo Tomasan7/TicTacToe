@@ -181,12 +181,12 @@ Sent to the server when a player changes his name, color or symbol.
 ##### ServerSetPlayerData (7)
 Sent to all players when a player changes his name, color or symbol.
 
-| field  | type    | description                                           |
-|--------|---------|-------------------------------------------------------|
-| id     | int     | the player's id                                       |
-| name   | string? | the player's new name. Missing if it hasn't changed   |
-| color  | int?    | the player's new color. Missing if it hasn't changed  |
-| symbol | symbol? | the player's new symbol. Missing if it hasn't changed |
+| field    | type    | description                                           |
+|----------|---------|-------------------------------------------------------|
+| playerId | int     | the player's id                                       |
+| name     | string? | the player's new name. Missing if it hasn't changed   |
+| color    | int?    | the player's new color. Missing if it hasn't changed  |
+| symbol   | symbol? | the player's new symbol. Missing if it hasn't changed |
 
 ##### ClientReady (8)
 Sent when the player is (un)ready. 
