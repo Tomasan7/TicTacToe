@@ -5,6 +5,7 @@ import me.tomasan7.tictactoe.server.network.packet.server.ServerPacket
 
 @Serializable
 data class ServerJoinGamePacket(
+    val gameCode: String,
     val width: Int,
     val height: Int,
     val winLength: Int,
