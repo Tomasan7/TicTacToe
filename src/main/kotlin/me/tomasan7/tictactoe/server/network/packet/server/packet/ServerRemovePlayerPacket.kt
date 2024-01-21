@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import me.tomasan7.tictactoe.server.network.packet.server.ServerPacket
 
 @Serializable
-data class ServerRemovePacket(
+data class ServerRemovePlayerPacket(
     val playerId: Int
 ) : ServerPacket
 {
