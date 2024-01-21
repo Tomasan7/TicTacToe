@@ -214,6 +214,7 @@ Sent to all players when a player is (un)ready.
 | field    | type | description                                                  |
 |----------|------|--------------------------------------------------------------|
 | playerId | int  | the player's id                                              |
+| value    | bool | true, when they are ready, false when they are unready again |
 
 #### In-Game State
 

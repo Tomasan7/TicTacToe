@@ -5,7 +5,8 @@ import me.tomasan7.tictactoe.server.network.packet.server.ServerPacket
 
 @Serializable
 data class ServerPlayerReady(
-    val playerId: Int
+    val playerId: Int,
+    val value: Boolean
 ) : ServerPacket
 {
     override val id = PACKET_ID
