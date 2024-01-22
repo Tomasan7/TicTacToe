@@ -1,6 +1,7 @@
 package me.tomasan7.tictactoe.server.game.packet.server
 
-import me.tomasan7.tictactoe.server.game.packet.server.packet.ServerPlaceSymbolPacket
+import me.tomasan7.tictactoe.server.network.packet.server.JsonServerPacketSerializer
+import me.tomasan7.tictactoe.server.network.packet.server.packet.ServerPlaceSymbolPacket
 import org.junit.jupiter.api.TestInstance
 import kotlin.test.Test
 import kotlin.test.assertEquals
