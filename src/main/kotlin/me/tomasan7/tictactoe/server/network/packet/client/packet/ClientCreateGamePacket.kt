@@ -8,6 +8,7 @@ data class ClientCreateGamePacket(
     val width: Int,
     val height: Int,
     val winLength: Int,
+    val symbolSize: Int,
     val maxPlayers: Int,
     val public: Boolean
 ) : ClientPacket
