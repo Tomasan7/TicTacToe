@@ -12,4 +12,5 @@ interface Session
 
     suspend fun sendPacket(packet: ServerPacket)
     suspend fun close(message: String = "")
+    fun isActive(): Boolean
 }

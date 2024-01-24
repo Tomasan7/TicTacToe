@@ -5,6 +5,7 @@ import io.ktor.server.websocket.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.isActive
 import me.tomasan7.tictactoe.server.network.packet.InvalidPacketFormatException
 import me.tomasan7.tictactoe.server.network.packet.InvalidPacketIdException
 import me.tomasan7.tictactoe.server.network.packet.client.ClientPacket
@@ -69,5 +70,10 @@ class WsSession(
     override suspend fun close(message: String)
     {
         wsSession.close(CloseReason(CloseReason.Codes.NORMAL, message))
+    }
+
+    override fun isActive(): Boolean
+    {
+        return wsSession.isActive
     }
 }
