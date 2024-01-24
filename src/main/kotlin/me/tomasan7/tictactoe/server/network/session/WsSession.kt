@@ -26,6 +26,9 @@ class WsSession(
     private val _incomingPacketsChannel = Channel<ClientPacket>()
     override val incomingPacketsChannel: ReceiveChannel<ClientPacket> = _incomingPacketsChannel
 
+    override val isActive: Boolean
+        get() = wsSession.isActive
+
     /**
      * Intended to only be called by the websockets handler.
      */
@@ -40,19 +43,19 @@ class WsSession(
             }
             catch (e: InvalidPacketFormatException)
             {
-                return logger.warn("Received an invalid packet format from $remoteHost: \n'$frameText'")
+                return logger.warn("Received an invalid packet format from $remoteHost: '$frameText'")
             }
             catch (e: InvalidPacketIdException)
             {
-                return logger.warn("Received a packet with an invalid id from $remoteHost: \n'$frameText'")
+                return logger.warn("Received a packet with an invalid id from $remoteHost: '$frameText'")
             }
             catch (e: Exception)
             {
-                return logger.warn("Failed to parse packet from $remoteHost. ${e.message}: \n'$frameText'")
+                return logger.warn("Failed to parse packet from $remoteHost. ${e.message}: '$frameText'")
             }
 
             _incomingPacketsChannel.send(packet)
-            logger.debug("Received a packet from $remoteHost: \n'$frameText'")
+            logger.debug("Received a packet from $remoteHost: '$frameText'")
         }
         else
             logger.warn("Received non text frame of type ${incomingFrame.frameType} from $remoteHost")
@@ -64,16 +67,11 @@ class WsSession(
         val frame = Frame.Text(serializedPacket)
         wsSession.send(frame)
 
-        logger.debug("Sending packet to $remoteHost: \n'$serializedPacket'")
+        logger.debug("Sending packet to $remoteHost: '$serializedPacket'")
     }
 
     override suspend fun close(message: String)
     {
         wsSession.close(CloseReason(CloseReason.Codes.NORMAL, message))
-    }
-
-    override fun isActive(): Boolean
-    {
-        return wsSession.isActive
     }
 }
