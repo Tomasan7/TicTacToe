@@ -1,5 +1,6 @@
 package me.tomasan7.tictactoe.server.game.packet.client
 
+import me.tomasan7.tictactoe.server.network.packet.client.JsonClientPacketDeserializer
 import me.tomasan7.tictactoe.server.network.packet.client.packet.ClientCreateGamePacket
 import org.junit.jupiter.api.TestInstance
 import kotlin.test.Test
@@ -7,17 +8,19 @@ import kotlin.test.Test
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class JsonClientPacketDeserializerTest
 {
-    val deserializer = me.tomasan7.tictactoe.server.network.packet.client.JsonClientPacketDeserializer()
+    val deserializer = JsonClientPacketDeserializer()
 
     @Test
     fun testDeserializePacket()
     {
+        val packetIdDataSeparator = JsonClientPacketDeserializer.PACKET_ID_DATA_SEPARATOR
+
         val serializedPacket = """
-            0
-            {
+            0$packetIdDataSeparator{
                 "width": 3,
                 "height": 3,
                 "winLength": 3,
+                "symbolSize": 5,
                 "maxPlayers": 2,
                 "public": true
             }
@@ -27,6 +30,7 @@ class JsonClientPacketDeserializerTest
             width = 3,
             height = 3,
             winLength = 3,
+            symbolSize = 5,
             maxPlayers = 2,
             public = true
         )

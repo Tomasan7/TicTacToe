@@ -23,19 +23,15 @@ class JsonClientPacketDeserializer : ClientPacketDeserializer
      */
     override fun deserializePacket(serializedPacket: String): ClientPacket
     {
-        val split = serializedPacket.split("\n", limit = 2) /* limit 2, so it is only divided into packet id and packet data */
+        val split = serializedPacket.split(PACKET_ID_DATA_SEPARATOR, limit = 2) /* limit 2, so it is only divided into packet id and packet data */
 
         if (split.size != 2)
             throw InvalidPacketFormatException(
-                "Expected a single new line between id and data",
-                serializedPacket
+                "Expected '$PACKET_ID_DATA_SEPARATOR' between id and data", serializedPacket
             )
 
         val id = split[0].toIntOrNull()
-            ?: throw InvalidPacketFormatException(
-                "Expected an integer id",
-                serializedPacket
-            )
+            ?: throw InvalidPacketFormatException("Expected an integer id", serializedPacket)
 
         val packetFun = packetMap[id] ?:
             throw InvalidPacketIdException(id)
@@ -70,5 +66,10 @@ class JsonClientPacketDeserializer : ClientPacketDeserializer
         registerPacket(ClientPlaceSymbolPacket.PACKET_ID, ClientPlaceSymbolPacket::class)
         registerPacket(ClientReadyPacket.PACKET_ID, ClientReadyPacket::class)
         registerPacket(ClientSetPlayerDataPacket.PACKET_ID, ClientSetPlayerDataPacket::class)
+    }
+
+    companion object
+    {
+        const val PACKET_ID_DATA_SEPARATOR = "="
     }
 }

@@ -76,8 +76,7 @@ Implementation independent protocol (web, desktop, mobile...)
 #### Serialization (MAY CHANGE)
 Currently, they are serialized into a string of the following form:
 ```
-{PACKET_ID}\n
-{PACKET_DATA_JSON}
+{PACKET_ID}={PACKET_DATA_JSON}
 ```
 Or in case of a packet with no data:
 ```
@@ -85,8 +84,7 @@ Or in case of a packet with no data:
 ```
 Example ClientJoinGame:
 ```
-12
-{"gameCode":"123456"}
+12={"gameCode":"123456"}
 ```
 
 ### Types

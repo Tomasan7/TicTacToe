@@ -14,13 +14,15 @@ internal class JsonServerPacketSerializerTest
     @Test
     fun serializePacket()
     {
+        val packetIdDataSeparator = JsonServerPacketSerializer.PACKET_ID_DATA_SEPARATOR
+
         val serverPlaceSymbolPacket = ServerPlaceSymbolPacket(
             playerId = 23,
             x = 4,
             y = 12
         )
 
-        val expected = """14${"\n"}{"playerId":23,"x":4,"y":12}"""
+        val expected = """14$packetIdDataSeparator{"playerId":23,"x":4,"y":12}"""
         val actual = serializer.serializePacket(serverPlaceSymbolPacket)
 
         assertEquals(expected, actual)
