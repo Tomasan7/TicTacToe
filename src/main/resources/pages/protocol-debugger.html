@@ -132,7 +132,7 @@
         }
 
         let id = parseInt(packetType)
-        let frame = `${id}\n${JSON.stringify(packetData)}`
+        let frame = `${id}=${JSON.stringify(packetData)}`
 
         socket.send(frame);
     }
