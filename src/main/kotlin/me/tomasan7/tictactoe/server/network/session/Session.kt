@@ -9,8 +9,8 @@ interface Session
 {
     /* Useful resource https://medium.com/@mortitech/mastering-kotlin-channels-from-beginner-to-pro-part-2-3477255aee15 */
     val incomingPacketsChannel: ReceiveChannel<ClientPacket>
+    val isActive: Boolean
 
     suspend fun sendPacket(packet: ServerPacket)
     suspend fun close(message: String = "")
-    fun isActive(): Boolean
 }

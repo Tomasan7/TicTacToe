@@ -5,6 +5,8 @@ import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.launch
+import me.tomasan7.tictactoe.server.game.GameManager
+import me.tomasan7.tictactoe.server.game.SessionManager
 import me.tomasan7.tictactoe.server.network.packet.client.JsonClientPacketDeserializer
 import me.tomasan7.tictactoe.server.network.packet.server.JsonServerPacketSerializer
 import me.tomasan7.tictactoe.server.network.packet.server.packet.ServerClientReadyAckPacket
@@ -24,18 +26,15 @@ fun Application.configureSockets()
         masking = false
     }
 
-    /* Temporary */
-    val sessions = Collections.synchronizedSet<Session>(LinkedHashSet())
+    val sessionManager = SessionManager(GameManager())
 
     routing {
         webSocket("/ws") {
             val session = WsSession(this, JsonServerPacketSerializer(), JsonClientPacketDeserializer())
-            sessions.add(session)
+            sessionManager.addSession(session)
 
             for (frame in incoming)
                 session.receiveFrame(frame)
-
-            sessions.remove(session)
         }
     }
 }
