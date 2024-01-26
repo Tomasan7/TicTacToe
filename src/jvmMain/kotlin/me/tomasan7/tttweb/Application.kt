@@ -17,4 +17,5 @@ fun Application.module()
     configureCallLogging()
     configureSockets()
     configureRouting()
+    configureTemplating()
 }
