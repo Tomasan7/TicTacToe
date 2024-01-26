@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import me.tomasan7.tictactoe.protocol.packet.server.ServerPacket
 
 @Serializable
-data class ServerPlayerReady(
+data class ServerPlayerReadyPacket(
     val playerId: Int,
     val value: Boolean
 ) : ServerPacket

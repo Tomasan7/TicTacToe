@@ -1,23 +1,18 @@
 package me.tomasan7.tictactoe.protocol.packet.server
 
-import kotlinx.serialization.KSerializer
-import kotlinx.serialization.json.Json
-import me.tomasan7.tictactoe.util.getSerializableClassSerializer
+import me.tomasan7.tictactoe.protocol.packet.JsonPacketSerializer
 
-class JsonServerPacketSerializer : ServerPacketSerializer
+class JsonServerPacketSerializer(
+    private val jsonPacketSerializer: JsonPacketSerializer = JsonPacketSerializer()
+) : ServerPacketSerializer
 {
-    private val json = Json {}
-
     override fun serializePacket(packet: ServerPacket): String
     {
-        val serializer = getSerializableClassSerializer(packet::class) as? KSerializer<ServerPacket>
-            ?: throw IllegalArgumentException("No serializer found for ${packet::class.simpleName}")
-
-        return packet.id.toString() + PACKET_ID_DATA_SEPARATOR + json.encodeToString(serializer, packet)
+        return jsonPacketSerializer.serializePacket(packet)
     }
 
-    companion object
+    override fun deserializePacket(serializedPacket: String): ServerPacket
     {
-        const val PACKET_ID_DATA_SEPARATOR = "="
+        return jsonPacketSerializer.deserializePacket(serializedPacket) as ServerPacket
     }
 }

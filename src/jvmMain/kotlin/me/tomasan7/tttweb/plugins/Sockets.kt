@@ -3,7 +3,8 @@ package me.tomasan7.tttweb.plugins
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
-import me.tomasan7.tictactoe.protocol.packet.client.JsonClientPacketDeserializer
+import me.tomasan7.tictactoe.protocol.packet.JsonPacketSerializer
+import me.tomasan7.tictactoe.protocol.packet.client.JsonClientPacketSerializer
 import me.tomasan7.tictactoe.protocol.packet.server.JsonServerPacketSerializer
 import me.tomasan7.tictactoe.server.game.GameManager
 import me.tomasan7.tictactoe.server.game.SessionManager
@@ -23,7 +24,12 @@ fun Application.configureSockets()
 
     routing {
         webSocket("/ws") {
-            val session = WsSession(this, JsonServerPacketSerializer(), JsonClientPacketDeserializer())
+            val jsonPacketSerializer = JsonPacketSerializer()
+            val session = WsSession(
+                this,
+                JsonServerPacketSerializer(jsonPacketSerializer),
+                JsonClientPacketSerializer()
+            )
             sessionManager.addSession(session)
 
             for (frame in incoming)

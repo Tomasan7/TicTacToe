@@ -6,7 +6,8 @@ import io.ktor.websocket.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.isActive
-import me.tomasan7.tictactoe.protocol.packet.client.JsonClientPacketDeserializer
+import me.tomasan7.tictactoe.protocol.packet.JsonPacketSerializer
+import me.tomasan7.tictactoe.protocol.packet.client.JsonClientPacketSerializer
 import me.tomasan7.tictactoe.protocol.packet.server.ServerPacket
 import me.tomasan7.tictactoe.protocol.packet.server.ServerPacketSerializer
 import org.slf4j.LoggerFactory
@@ -14,7 +15,7 @@ import org.slf4j.LoggerFactory
 class WsSession(
     private val wsSession: WebSocketServerSession,
     private val serverPacketSerializer: ServerPacketSerializer,
-    private val clientPacketDeserializer: JsonClientPacketDeserializer
+    private val clientPacketDeserializer: JsonClientPacketSerializer
 ) : Session
 {
     private val logger = LoggerFactory.getLogger(WsSession::class.java)
