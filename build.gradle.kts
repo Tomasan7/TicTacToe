@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
+import kotlin.io.path.Path
+
 val ktor_version: String by project
 val kotlin_version: String by project
 val logback_version: String by project
@@ -15,10 +18,6 @@ repositories {
     mavenCentral()
 }
 
-tasks.test {
-    useJUnitPlatform()
-}
-
 kotlin {
     jvm {
         jvmToolchain(17)
@@ -30,7 +29,7 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0-RC2")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
@@ -38,7 +37,7 @@ kotlin {
             }
         }
 
-        val jvmMain by getting {
+        jvmMain {
             dependencies {
                 runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:1.8.0-RC2")
 
@@ -60,14 +59,34 @@ kotlin {
             }
         }
 
-        val jvmTest by getting {
+        jvmTest {
             dependencies {
                 implementation("io.ktor:ktor-server-tests-jvm")
                 implementation(kotlin("test"))
             }
         }
+    }
+}
 
-        val jsMain by getting
+tasks {
+    test {
+        useJUnitPlatform()
+    }
+
+    val compileFrontend by registering(Copy::class) {
+        val outputResourcePath = Path("frontend/TicTacToe.js")
+
+        val jsBrowserDistTask = getByName<KotlinWebpack>("jsBrowserDevelopmentWebpack")
+        dependsOn(jsBrowserDistTask)
+        from(jsBrowserDistTask.mainOutputFile) {
+            rename { outputResourcePath.fileName.toString() }
+        }
+        val jvmProcessResourcesTask = getByName<ProcessResources>("jvmProcessResources")
+        into(jvmProcessResourcesTask.destinationDir.resolve(outputResourcePath.parent.toString()))
+    }
+
+    named("compileKotlinJvm") {
+        dependsOn(compileFrontend)
     }
 }
 
