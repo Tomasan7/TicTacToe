@@ -39,7 +39,7 @@ kotlin {
 
         jvmMain {
             dependencies {
-                runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:1.8.0-RC2")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:1.8.0-RC2")
 
                 implementation("io.ktor:ktor-server-default-headers:$ktor_version")
                 implementation("io.ktor:ktor-server-forwarded-header:$ktor_version")
@@ -56,6 +56,7 @@ kotlin {
                 runtimeOnly("org.slf4j:slf4j-api:2.0.11")
                 implementation("org.fusesource.jansi:jansi:2.3.2")
                 implementation("ch.qos.logback:logback-classic:1.4.14")
+                implementation("org.reflections:reflections:0.10.2")
             }
         }
 
