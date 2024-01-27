@@ -1,0 +1,54 @@
+#home-page
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 5px;
+}
+
+h1, h2, h3, h4, h5, h6
+{
+    text-align: center;
+}
+
+#join-game-form
+{
+    display: flex;
+    flex-direction: row;
+    column-gap: 5px;
+}
+
+#home-page
+{
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 10px;
+}
+
+#code-input
+{
+    text-transform: uppercase;
+}
+
+#create
+{
+    margin-top: 20px;
+    width: 100px;
+}
+
+.game-area
+{
+    border-style: none;
+}
+.game-area input
+{
+    width: 70px;
+}
+.game-area legend
+{
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+}
