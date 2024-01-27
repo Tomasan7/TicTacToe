@@ -157,6 +157,10 @@ class Game(val code: String, val options: GameOptions)
                     .filter { it !== player }
                     .any { nameSymbolOrColorSame(it, player) }
 
+                val nameSymbolOrColorNotSet = player.name.isNullOrBlank()
+                        || player.symbol.isNullOrBlank()
+                        || player.color == null
+
                 if (nameSymbolOrColorSameAsAnotherPlayer)
                     player.sendServerPacket(
                         ServerClientReadyAckPacket(
@@ -164,6 +168,8 @@ class Game(val code: String, val options: GameOptions)
                             "Name, symbol, or color is the same as another player's"
                         )
                     )
+                else if (nameSymbolOrColorNotSet)
+                    player.sendServerPacket(ServerClientReadyAckPacket(false, "Name, symbol, or color is not set"))
                 else
                 {
                     player.ready = true
