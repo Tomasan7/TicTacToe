@@ -154,7 +154,6 @@ Contains the game configuration, so the client can set up the game properly.
 
 ##### ServerAddPlayer (4)
 Sent to all players when a new player joins the game.
-Should be followed by an initial [ServerSetPlayerData](#serversetplayerdata-7) packet.
 
 | field    | type | description         |
 |----------|------|---------------------|
