@@ -44,11 +44,14 @@ class Game(val code: String, val options: GameOptions)
             for (otherPlayer in playersExcept(player))
                 player.sendPacket(constructServerSetPlayerDataPacket(otherPlayer))
             session.incomingPackets.collect { packet ->
-                clientPacketHandler.handle(packet, player)
+                if (packet !is ClientSession.TerminationPacket)
+                    clientPacketHandler.handle(packet, player)
+                else
+                {
+                    removePlayer(player)
+                    return@collect
+                }
             }
-
-            /* If the above for loop ends, it means the connection was closed */
-            removePlayer(player)
         }
 
         return true

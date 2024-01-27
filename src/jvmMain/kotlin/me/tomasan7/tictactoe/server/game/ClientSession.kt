@@ -28,6 +28,8 @@ class ClientSession(val underlyingSession: Session)
         coroutineScope.launch {
             for (packet in underlyingSession.incomingPacketsChannel)
                 _incomingPackets.emit(packet)
+
+            _incomingPackets.emit(TerminationPacket)
         }
     }
 
@@ -44,5 +46,11 @@ class ClientSession(val underlyingSession: Session)
             underlyingSession.close()
             coroutineScope.cancel() // Is this possible? (to cancel a scope from inside it)
         }
+    }
+
+    /** Broadcasted by the shared flow, when the connection is closed.  */
+    data object TerminationPacket : ClientPacket
+    {
+        override val id = -1
     }
 }
