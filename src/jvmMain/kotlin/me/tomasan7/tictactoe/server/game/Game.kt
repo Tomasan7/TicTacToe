@@ -143,7 +143,7 @@ class Game(val code: String, val options: GameOptions)
                 player.name = newName
             if (newColor != null)
                 player.color = Color(newColor)
-            if (newSymbol != null && newSymbol.length != options.symbolSize*options.symbolSize)
+            if (newSymbol != null && newSymbol.length == options.symbolSize*options.symbolSize)
                 player.symbol = newSymbol
 
             broadcastPacketExcept(ServerSetPlayerDataPacket(player.id, newName, newColor, newSymbol), player)
