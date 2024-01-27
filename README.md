@@ -176,7 +176,7 @@ Sent to the server when a player changes his name, color or symbol.
 | symbol | symbol? | the player's new symbol. Missing if it hasn't changed              |
 
 ##### ServerSetPlayerData (7)
-Sent to all players when a player changes his name, color or symbol.
+Sent to all other players when a player changes his name, color or symbol.
 
 | field    | type    | description                                           |
 |----------|---------|-------------------------------------------------------|
