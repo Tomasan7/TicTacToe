@@ -6,6 +6,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import me.tomasan7.tictactoe.protocol.packet.client.ClientPacket
 import me.tomasan7.tictactoe.protocol.packet.server.ServerPacket
 import me.tomasan7.tictactoe.server.network.session.Session
 
@@ -16,7 +17,7 @@ class ClientSession(val underlyingSession: Session)
 {
     private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
 
-    private val _incomingPackets = MutableSharedFlow<me.tomasan7.tictactoe.protocol.packet.client.ClientPacket>()
+    private val _incomingPackets = MutableSharedFlow<ClientPacket>()
     val incomingPackets = _incomingPackets.asSharedFlow()
 
     val isActive: Boolean
