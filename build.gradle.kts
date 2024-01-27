@@ -74,7 +74,7 @@ tasks {
         useJUnitPlatform()
     }
 
-    val compileFrontend by registering(Copy::class) {
+    val compileFrontendDev by registering(Copy::class) {
         val outputResourcePath = Path("frontend/TicTacToe.js")
 
         val jsBrowserDistTask = getByName<KotlinWebpack>("jsBrowserDevelopmentWebpack")
@@ -87,7 +87,7 @@ tasks {
     }
 
     named("compileKotlinJvm") {
-        dependsOn(compileFrontend)
+        dependsOn(compileFrontendDev)
     }
 }
 
