@@ -174,14 +174,14 @@ class Game(val code: String, val options: GameOptions)
                 {
                     player.ready = true
                     player.sendServerPacket(ServerClientReadyAckPacket(true, null))
-                    broadcastPacket(ServerPlayerReadyPacket(player.id, true))
+                    broadcastPacketExcept(ServerPlayerReadyPacket(player.id, true), player)
                 }
             }
             else
             {
                 player.ready = false
                 player.sendServerPacket(ServerClientReadyAckPacket(false, null))
-                broadcastPacket(ServerPlayerReadyPacket(player.id, false))
+                broadcastPacketExcept(ServerPlayerReadyPacket(player.id, false), player)
             }
         }
 
