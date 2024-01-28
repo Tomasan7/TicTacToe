@@ -1,5 +1,7 @@
 package me.tomasan7.tictactoe.server.game
 
+import me.tomasan7.tictactoe.game.GameOptions
+import me.tomasan7.tictactoe.protocol.packet.client.ClientPacket
 import me.tomasan7.tictactoe.protocol.packet.client.packet.ClientCreateGamePacket
 import me.tomasan7.tictactoe.protocol.packet.client.packet.ClientJoinGamePacket
 import me.tomasan7.tictactoe.protocol.packet.client.packet.ClientJoinRandomGamePacket
@@ -9,7 +11,7 @@ class IndependentPacketHandler(
     private val gameManager: GameManager
 )
 {
-    fun handlePacket(packet: me.tomasan7.tictactoe.protocol.packet.client.ClientPacket, session: ClientSession)
+    fun handlePacket(packet: ClientPacket, session: ClientSession)
     {
         when (packet)
         {

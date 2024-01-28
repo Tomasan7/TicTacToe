@@ -6,7 +6,10 @@ import io.ktor.websocket.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.isActive
+import me.tomasan7.tictactoe.protocol.packet.InvalidPacketFormatException
+import me.tomasan7.tictactoe.protocol.packet.InvalidPacketIdException
 import me.tomasan7.tictactoe.protocol.packet.JsonPacketSerializer
+import me.tomasan7.tictactoe.protocol.packet.client.ClientPacket
 import me.tomasan7.tictactoe.protocol.packet.client.JsonClientPacketSerializer
 import me.tomasan7.tictactoe.protocol.packet.server.ServerPacket
 import me.tomasan7.tictactoe.protocol.packet.server.ServerPacketSerializer
@@ -21,8 +24,8 @@ class WsSession(
     private val logger = LoggerFactory.getLogger(WsSession::class.java)
     private val remoteHost = wsSession.call.request.origin.remoteHost
 
-    private val _incomingPacketsChannel = Channel<me.tomasan7.tictactoe.protocol.packet.client.ClientPacket>()
-    override val incomingPacketsChannel: ReceiveChannel<me.tomasan7.tictactoe.protocol.packet.client.ClientPacket> = _incomingPacketsChannel
+    private val _incomingPacketsChannel = Channel<ClientPacket>()
+    override val incomingPacketsChannel: ReceiveChannel<ClientPacket> = _incomingPacketsChannel
 
     override val isActive: Boolean
         get() = wsSession.isActive
@@ -39,11 +42,11 @@ class WsSession(
             {
                 clientPacketDeserializer.deserializePacket(frameText)
             }
-            catch (e: me.tomasan7.tictactoe.protocol.packet.InvalidPacketFormatException)
+            catch (e: InvalidPacketFormatException)
             {
                 return logger.warn("Received an invalid packet format from $remoteHost: '$frameText'")
             }
-            catch (e: me.tomasan7.tictactoe.protocol.packet.InvalidPacketIdException)
+            catch (e: InvalidPacketIdException)
             {
                 return logger.warn("Received a packet with an invalid id from $remoteHost: '$frameText'")
             }

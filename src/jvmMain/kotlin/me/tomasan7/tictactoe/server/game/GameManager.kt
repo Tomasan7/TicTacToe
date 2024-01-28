@@ -1,5 +1,7 @@
 package me.tomasan7.tictactoe.server.game
 
+import me.tomasan7.tictactoe.game.GameOptions
+
 class GameManager
 {
     private val games = mutableMapOf<String, Game>()

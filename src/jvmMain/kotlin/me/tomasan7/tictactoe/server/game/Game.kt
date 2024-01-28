@@ -3,6 +3,8 @@ package me.tomasan7.tictactoe.server.game
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import me.tomasan7.tictactoe.game.GameOptions
+import me.tomasan7.tictactoe.protocol.packet.client.ClientPacket
 import me.tomasan7.tictactoe.protocol.packet.client.packet.ClientReadyPacket
 import me.tomasan7.tictactoe.protocol.packet.client.packet.ClientSetPlayerDataPacket
 import me.tomasan7.tictactoe.protocol.packet.server.ServerPacket
@@ -123,7 +125,7 @@ class Game(val code: String, val options: GameOptions)
 
     private inner class ClientPacketHandler
     {
-        fun handle(packet: me.tomasan7.tictactoe.protocol.packet.client.ClientPacket, player: Player)
+        fun handle(packet: ClientPacket, player: Player)
         {
             when (packet)
             {
