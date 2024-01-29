@@ -44,6 +44,7 @@ class Color(value: UInt)
         val BLUE = Color(blue = 0xFFu)
         val BLACK = Color()
         val WHITE = Color(0xFFFFFFFFu)
+        val TRANSPARENT = Color(alpha = 0u)
     }
 
     class Serializer : KSerializer<Color>
