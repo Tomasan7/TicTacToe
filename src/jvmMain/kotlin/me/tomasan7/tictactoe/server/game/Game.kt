@@ -73,7 +73,7 @@ class Game(val code: String, val options: GameOptions)
     private fun constructServerSetPlayerDataPacket(player: Player) = ServerSetPlayerDataPacket(
         player.id,
         player.name,
-        player.color?.value,
+        player.color,
         player.symbol
     )
 
@@ -144,7 +144,7 @@ class Game(val code: String, val options: GameOptions)
             if (newName != null)
                 player.name = newName
             if (newColor != null)
-                player.color = Color(newColor)
+                player.color = newColor
             if (newSymbol != null && newSymbol.length == options.symbolSize*options.symbolSize)
                 player.symbol = newSymbol
 

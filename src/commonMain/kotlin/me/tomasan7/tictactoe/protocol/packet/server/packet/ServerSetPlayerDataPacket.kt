@@ -2,12 +2,13 @@ package me.tomasan7.tictactoe.protocol.packet.server.packet
 
 import kotlinx.serialization.Serializable
 import me.tomasan7.tictactoe.protocol.packet.server.ServerPacket
+import me.tomasan7.tictactoe.util.Color
 
 @Serializable
 data class ServerSetPlayerDataPacket(
     val playerId: Int,
     val name: String? = null,
-    val color: Int? = null,
+    val color: Color? = null,
     val symbol: String? = null
 ) : ServerPacket
 {
