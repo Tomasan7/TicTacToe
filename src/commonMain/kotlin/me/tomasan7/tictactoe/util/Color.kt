@@ -12,7 +12,7 @@ import kotlinx.serialization.encoding.Encoder
  * @constructor The value is in the format 0xAARRGGBB
  */
 @Serializable(with = Color.Serializer::class)
-class Color(value: UInt)
+class Color(val value: UInt)
 {
     constructor(red: UByte = 0u, green: UByte = 0u, blue: UByte = 0u, alpha: UByte = 0xFFu) :
             this(
@@ -36,6 +36,16 @@ class Color(value: UInt)
     fun withAlpha(alpha: UByte) = Color(red, green, blue, alpha)
     fun copy(red: UByte = this.red, green: UByte = this.green, blue: UByte = this.blue, alpha: UByte = this.alpha) =
         Color(red, green, blue, alpha)
+
+    override fun hashCode() = value.toInt()
+
+    override fun equals(other: Any?): Boolean
+    {
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+        other as Color
+        return value == other.value
+    }
 
     companion object
     {
