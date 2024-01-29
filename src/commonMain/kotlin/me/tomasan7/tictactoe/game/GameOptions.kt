@@ -1,4 +1,4 @@
-package me.tomasan7.tictactoe.server.game
+package me.tomasan7.tictactoe.game
 
 data class GameOptions(
     val width: Int,
