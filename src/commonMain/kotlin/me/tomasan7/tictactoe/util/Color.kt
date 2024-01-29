@@ -30,6 +30,13 @@ class Color(value: UInt)
     val green = ((value shr 8) and 0xFFu).toUByte()
     val blue = (value and 0xFFu).toUByte()
 
+    fun withRed(red: UByte) = Color(red, green, blue, alpha)
+    fun withGreen(green: UByte) = Color(red, green, blue, alpha)
+    fun withBlue(blue: UByte) = Color(red, green, blue, alpha)
+    fun withAlpha(alpha: UByte) = Color(red, green, blue, alpha)
+    fun copy(red: UByte = this.red, green: UByte = this.green, blue: UByte = this.blue, alpha: UByte = this.alpha) =
+        Color(red, green, blue, alpha)
+
     companion object
     {
         val RED = Color(red = 0xFFu)
