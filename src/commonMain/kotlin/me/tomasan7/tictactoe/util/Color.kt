@@ -23,7 +23,7 @@ class Color(val value: UInt)
             )
 
     val valueHex by lazy { value.toString(16).padStart(8, '0') }
-    val rgbValueHex by lazy { value.toString(16).removeRange(0..1).padStart(6, '0') }
+    val rgbValueHex by lazy { valueHex.removeRange(0..1) }
 
     val alpha = ((value shr 24) and 0xFFu).toUByte()
     val red = ((value shr 16) and 0xFFu).toUByte()
