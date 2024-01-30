@@ -2,5 +2,6 @@ package me.tomasan7.tictactoe.web
 
 fun main()
 {
-    println("Hello, world from JS!")
+    val application = Application()
+    application.init()
 }

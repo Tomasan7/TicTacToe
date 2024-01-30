@@ -1,24 +1,4 @@
-#home-page
-{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    row-gap: 5px;
-}
-
-h1, h2, h3, h4, h5, h6
-{
-    text-align: center;
-}
-
-#join-game-form
-{
-    display: flex;
-    flex-direction: row;
-    column-gap: 5px;
-}
-
-#home-page
+#homepage
 {
     margin-top: 40px;
     display: flex;
@@ -27,7 +7,19 @@ h1, h2, h3, h4, h5, h6
     row-gap: 10px;
 }
 
-#code-input
+h1, h2, h3, h4, h5, h6
+{
+    text-align: center;
+}
+
+#join-game-container
+{
+    display: flex;
+    flex-direction: row;
+    column-gap: 5px;
+}
+
+#game-code-input
 {
     text-transform: uppercase;
 }

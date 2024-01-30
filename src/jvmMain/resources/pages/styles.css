@@ -38,6 +38,14 @@ a
     box-shadow: 4px 4px rgba(117, 117, 117, 0.54);
 }
 
+.button:disabled
+{
+    background-color: grey;
+    transform: translate(3px, 3px);
+    box-shadow: none;
+    cursor: default;
+}
+
 .button:active
 {
     transform: translate(3px, 3px);

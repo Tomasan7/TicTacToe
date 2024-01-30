@@ -13,7 +13,8 @@
 </head>
 <body>
 <main>
-    <#include "home-page.html">
+    <div id="homepage" class="page"><#include "home-page.html"></div>
+    <div id="gamepage" class="page"><#include "game-page.html"></div>
 </main>
 
 <!-- Intentionally placed at the end of the body -->
