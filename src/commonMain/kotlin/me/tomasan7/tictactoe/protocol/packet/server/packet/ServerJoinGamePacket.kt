@@ -11,6 +11,7 @@ data class ServerJoinGamePacket(
     val winLength: Int,
     val symbolSize: Int,
     val maxPlayers: Int,
+    val public: Boolean,
     val playerId: Int,
     val ownerId: Int
 ) : ServerPacket

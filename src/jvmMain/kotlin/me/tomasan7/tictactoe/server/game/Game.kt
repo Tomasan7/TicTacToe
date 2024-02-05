@@ -66,6 +66,7 @@ class Game(val code: String, val options: GameOptions)
         options.winLength,
         options.symbolSize,
         options.maxPlayers,
+        options.public,
         player.id,
         ownerPlayer!!.id
     )

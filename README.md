@@ -147,6 +147,7 @@ Contains the game configuration, so the client can set up the game properly.
 | winLength  | int    | amount of symbols in row/column/diagonal needed ti win                       |
 | symbolSize | int    | the size of players' symbols (it is a square, so this is its side length)    |
 | maxPlayers | int    | max amount of players allowed to join the game                               |
+| public     | bool   | whether random players can join without a code                               |
 | playerId   | int    | the receiving player's new id                                                |
 | ownerId    | int    | id of the player, that is the owner of the game (most often the game create) |
 
