@@ -54,13 +54,13 @@ class CreateGamePage(
         val minWinLength = 3
 
         if (width < minSize || height < minSize)
-            return console.log("Game area too small")
+            return println("Game area too small")
 
         if (winLength < minWinLength)
-            return console.log("Win length too small")
+            return println("Win length too small")
 
         if (maxPlayers < 2)
-            return console.log("Too few players")
+            return println("Too few players")
 
         connection.sendPacket(ClientCreateGamePacket(width, height, winLength, symbolSize, maxPlayers, isPublic))
     }
