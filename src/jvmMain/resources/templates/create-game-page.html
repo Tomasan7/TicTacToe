@@ -1,0 +1,40 @@
+<link rel="stylesheet" href="/static/create-game-page.css">
+<link rel="stylesheet" href="/static/pages/styles.css">
+
+<h1 class="ttt-title title"><span>Tic</span><span>Tac</span><span>Toe</span></h1>
+<h4 class="new-game-title">NEW GAME</h4>
+<div id="create-game-form">
+    <div class="game-area">
+        <h4 class="game-area-title">Game area</h4>
+        <div class="fields">
+            <div class="field">
+                <label for="width-input">Width</label>
+                <input id="width-input" class="text-field" type="number" value="20">
+            </div>
+            <div class="field">
+                <label for="height-input">Height</label>
+                <input id="height-input" class="text-field" type="number" value="20">
+            </div>
+        </div>
+    </div>
+    <div class="field">
+        <label for="symbol-size-input">Symbol size (pixels)</label>
+        <input id="symbol-size-input" class="text-field" type="number" value="5">
+    </div>
+
+    <div class="field">
+        <label for="win-length-input">Streak to win</label>
+        <input id="win-length-input" class="text-field" type="number" value="5">
+    </div>
+    <div class="field">
+        <label for="max-players-input">Max players</label>
+        <input id="max-players-input" class="text-field" type="number" value="2">
+    </div>
+    <div class="field">
+        <label for="public-checkbox">Public</label>
+        <input id="public-checkbox" class="text-field" type="checkbox" value="false">
+    </div>
+    <button id="create-game-button" class="button">
+        Create
+    </button>
+</div>

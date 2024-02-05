@@ -1,0 +1,55 @@
+.new-game-title
+{
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.game-area-title
+{
+    font-weight: bold;
+}
+
+#create-game-form
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 10px;
+}
+
+#create-game-form .field input
+{
+    width: 60px;
+}
+
+#create-game-form .field
+{
+    display: flex;
+    flex-direction: column;
+    row-gap: 3px;
+    align-items: center;
+}
+
+.game-area
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: 10px;
+    border-style: none;
+    margin-bottom: 20px;
+}
+
+.game-area .fields
+{
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+}
+
+legend
+{
+    font-weight: bold;
+    text-align: center;
+}

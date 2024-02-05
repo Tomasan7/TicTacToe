@@ -4,54 +4,49 @@ import kotlinx.browser.document
 import kotlinx.browser.window
 import me.tomasan7.tictactoe.protocol.packet.InvalidPacketFormatException
 import me.tomasan7.tictactoe.protocol.packet.InvalidPacketIdException
-import me.tomasan7.tictactoe.protocol.packet.client.ClientPacket
 import me.tomasan7.tictactoe.protocol.packet.client.ClientPacketSerializer
 import me.tomasan7.tictactoe.protocol.packet.client.JsonClientPacketSerializer
 import me.tomasan7.tictactoe.protocol.packet.client.packet.ClientJoinGamePacket
 import me.tomasan7.tictactoe.protocol.packet.server.JsonServerPacketSerializer
 import me.tomasan7.tictactoe.protocol.packet.server.ServerPacket
 import me.tomasan7.tictactoe.protocol.packet.server.ServerPacketSerializer
+import me.tomasan7.tictactoe.web.page.HomePage
+import me.tomasan7.tictactoe.web.page.Page
+import me.tomasan7.tictactoe.web.page.PageChangeHandler
 import org.w3c.dom.WebSocket
 
-class Application
+class Application : PageChangeHandler
 {
-    private var currentGame: Game? = null
-    private var state: AppState = AppState.HOMEPAGE
-    private lateinit var socket: WebSocket
+    private lateinit var connection: Connection
     private val clientPacketSerializer: ClientPacketSerializer = JsonClientPacketSerializer()
     private val serverPacketSerializer: ServerPacketSerializer = JsonServerPacketSerializer()
-    private val dom = Dom(document)
-    private val currentPageEle = dom.homePageContainer
+
+    private val htmlMapper = HtmlIdMapper(document.body!!)
+
+    private val elements = object {
+        val homePage by htmlMapper
+        val gamePage by htmlMapper
+        val createGamePage by htmlMapper
+    }
+
+    private lateinit var page: Page
 
     fun init()
     {
         initSocket()
-        initElements()
+        elements.homePage.hide()
+        elements.gamePage.hide()
+        elements.createGamePage.hide()
     }
 
-    private fun initElements()
+    fun start()
     {
-        dom.homePageContainer.show()
-        dom.gamePageContainer.hide()
-
-        dom.homePage.joinGameButton.disabled = true
-        dom.homePage.gameCodeInput.oninput = {
-            if (dom.homePage.gameCodeInput.value.length == 6)
-                dom.homePage.joinGameButton.disabled = false
-            else
-                dom.homePage.joinGameButton.disabled = true
-        }
-
-        dom.homePage.joinGameButton.onclick = {
-            val packet = ClientJoinGamePacket(dom.homePage.gameCodeInput.value.uppercase())
-            sendPacket(packet)
-            null
-        }
+        changeToPage(HomePage(this, elements.createGamePage, elements.gamePage, elements.homePage, connection))
     }
 
     private fun initSocket()
     {
-        socket = WebSocket(getSocketUrlFromRelativePath("ws"))
+        val socket = WebSocket(getSocketUrlFromRelativePath("ws"))
         socket.onmessage = { event ->
             val frameText = event.data as String
             try
@@ -72,29 +67,12 @@ class Application
                 println("Failed to parse packet. ${e.message}: '$frameText'")
             }
         }
+
+        connection = WsConnection(socket, serverPacketSerializer, clientPacketSerializer)
     }
 
     private fun receivePacket(packet: ServerPacket)
     {
-        TODO()
-    }
-
-    private fun sendPacket(packet: ClientPacket)
-    {
-        socket.send(clientPacketSerializer.serializePacket(packet))
-    }
-
-    fun changeState(newState: AppState)
-    {
-        currentPageEle.hide()
-
-        when (newState)
-        {
-            AppState.HOMEPAGE -> dom.homePageContainer.show()
-            AppState.IN_GAME -> dom.gamePageContainer.show()
-        }
-
-        state = newState
     }
 
     private fun getSocketUrlFromRelativePath(path: String): String
@@ -109,5 +87,13 @@ class Application
             80
 
         return "$protocol//$host:$port/${path.removePrefix("/")}"
+    }
+
+    override fun changeToPage(page: Page)
+    {
+        if (::page.isInitialized)
+            this.page.exit()
+        page.enter()
+        this.page = page
     }
 }

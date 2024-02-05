@@ -7,6 +7,7 @@ import me.tomasan7.tictactoe.web.view.PlayersView
 
 class Game(
     meId: Int,
+    private val connection: Connection,
     private val gameOptions: GameOptions,
     private val boardView: BoardView,
     private val playersView: PlayersView

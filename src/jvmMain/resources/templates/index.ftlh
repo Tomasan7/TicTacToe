@@ -13,8 +13,9 @@
 </head>
 <body>
 <main>
-    <div id="homepage" class="page"><#include "home-page.html"></div>
-    <div id="gamepage" class="page"><#include "game-page.html"></div>
+    <div id="home-page" class="page"><#include "home-page.html"></div>
+    <div id="game-page" class="page"><#include "game-page.html"></div>
+    <div id="create-game-page" class="page"><#include "create-game-page.html"></div>
 </main>
 
 <!-- Intentionally placed at the end of the body -->
