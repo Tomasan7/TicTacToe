@@ -36,8 +36,9 @@ class PixelCanvas(
 
     fun setPixel(x: Int, y: Int, color: Color)
     {
-        if (x < 0 || x >= width || y < 0 || y >= height)
-            throw IllegalArgumentException("Pixel ($x, $y) is out of bounds for canvas ($width, $height)")
+        require(x in 0 ..< width && y in 0 ..< height) {
+            "Pixel ($x, $y) is out of bounds for canvas ($width, $height)"
+        }
 
         val imageData = context.createImageData(1.0, 1.0)
         /* Using dynamic, because javascript doesn't properly understand types and signedness */

@@ -35,7 +35,7 @@ class MonoPixelCanvas(
 
     private fun checkForBounds(x: Int, y: Int)
     {
-        require(x >= 0 || x < pixelData.size || y >= 0 || y < pixelData[0].size) {
+        require(x in pixelData.indices || y in pixelData[0].indices) {
             "Pixel ($x, $y) is out of bounds for canvas (${pixelData.size}, ${pixelData[0].size})"
         }
     }
