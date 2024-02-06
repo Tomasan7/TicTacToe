@@ -51,16 +51,33 @@ class PixelCanvas(
             "Pixel ($x, $y) is out of bounds for canvas ($width, $height)"
         }
 
-        val imageData = context.createImageData(1.0, 1.0)
-        /* Using dynamic, because javascript doesn't properly understand types and signedness */
-        /* Without dynamic, it only accepts Byte, which it doesn't properly understand */
-        /* So we convert the value to int, because it just has to look like a positive 0-255 integer */
+        setRectangle(x, y, arrayOf(arrayOf(color)))
+    }
+
+    fun setRectangle(rectX: Int, rectY: Int, pixels: Array<Array<Color>>)
+    {
+        val rectWidth = pixels.size
+        val rectHeight = pixels[0].size
+
+        require(rectX + rectWidth <= width && rectY + rectHeight <= height) {
+            "Rectangle ($rectX, $rectY) with size ($rectWidth, $rectHeight) is out of bounds for canvas  size (${width}, ${height})"
+        }
+
+        val imageData = context.createImageData(rectWidth.toDouble(), rectHeight.toDouble())
         val pixelData = imageData.data.asDynamic()
-        pixelData[0] = color.red.toInt()
-        pixelData[1] = color.green.toInt()
-        pixelData[2] = color.blue.toInt()
-        pixelData[3] = color.alpha.toInt()
-        context.putImageData(imageData, x.toDouble(), y.toDouble())
+
+        for (y in 0 until rectHeight)
+            for (x in 0 until rectWidth)
+            {
+                val color = pixels[y][y]
+                val index = (y * rectWidth + x) * 4
+                pixelData[index] = color.red.toInt()
+                pixelData[index + 1] = color.green.toInt()
+                pixelData[index + 2] = color.blue.toInt()
+                pixelData[index + 3] = color.alpha.toInt()
+            }
+
+        context.putImageData(imageData, rectX.toDouble(), rectY.toDouble())
     }
 
     fun clearPixel(x: Int, y: Int)
