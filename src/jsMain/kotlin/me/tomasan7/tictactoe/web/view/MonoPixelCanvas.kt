@@ -30,6 +30,13 @@ class MonoPixelCanvas(
 
     private val pixelCanvas = PixelCanvas(canvas, width, height)
 
+    var onMouseClick by pixelCanvas::onMouseClick
+    var onMouseMove by pixelCanvas::onMouseMove
+    var onMouseDown by pixelCanvas::onMouseDown
+    var onMouseUp by pixelCanvas::onMouseUp
+    var onMouseEnter by pixelCanvas::onMouseEnter
+    var onMouseLeave by pixelCanvas::onMouseLeave
+
     /** Two-dimensional boolean array indicating off and on pixels. */
     private val pixelData = Array(width) { Array(height) { false } }
 

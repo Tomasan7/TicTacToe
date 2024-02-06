@@ -1,18 +1,24 @@
 package me.tomasan7.tictactoe.web.view
 
 import me.tomasan7.tictactoe.util.Color
-import org.khronos.webgl.set
 import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
+import kotlin.math.floor
+import org.w3c.dom.events.MouseEvent as JsMouseEvent
 
 class PixelCanvas(
     private val canvas: HTMLCanvasElement,
     val width: Int,
-    val height: Int,
-    val onPixelClick: ((x: Int, y: Int) -> Unit)? = null
+    val height: Int
 )
 {
     private val context = canvas.getContext("2d") as CanvasRenderingContext2D
+    var onMouseClick: ((MouseEvent) -> Unit)? = null
+    var onMouseMove: ((MouseEvent) -> Unit)? = null
+    var onMouseDown: ((MouseEvent) -> Unit)? = null
+    var onMouseUp: ((MouseEvent) -> Unit)? = null
+    var onMouseEnter: ((MouseEvent) -> Unit)? = null
+    var onMouseLeave: ((MouseEvent) -> Unit)? = null
 
     init
     {
@@ -20,19 +26,24 @@ class PixelCanvas(
         canvas.height = height
         context.imageSmoothingEnabled = false
         canvas.style.imageRendering = "pixelated"
-        canvas.onclick = {
-            val (x, y) = getCanvasPixelFromOffset(it.offsetX, it.offsetY)
-            onPixelClick?.invoke(x, y)
-        }
+        canvas.onclick = { onMouseClick?.invoke(it.mouseEvent) }
+        canvas.onmousemove = { onMouseMove?.invoke(it.mouseEvent) }
+        canvas.onmousedown = { onMouseDown?.invoke(it.mouseEvent) }
+        canvas.onmouseup = { onMouseUp?.invoke(it.mouseEvent) }
+        canvas.onmouseenter = { onMouseEnter?.invoke(it.mouseEvent) }
+        canvas.onmouseleave = { onMouseLeave?.invoke(it.mouseEvent) }
     }
 
-    private fun getCanvasPixelFromOffset(offsetX: Double, offsetY: Double): Pair<Int, Int> {
-        // Ensure the coordinates are within the canvas bounds
-        val x = offsetX.coerceIn(0.0, canvas.width.toDouble() - 1)
-        val y = offsetY.coerceIn(0.0, canvas.height.toDouble() - 1)
+    private val JsMouseEvent.pixelX: Int
+        get() =
+            canvas.getBoundingClientRect().let { rect -> floor((clientX - rect.left) / rect.width * width).toInt() }
 
-        return Pair(x.toInt(), y.toInt())
-    }
+    private val JsMouseEvent.pixelY: Int
+        get() =
+            canvas.getBoundingClientRect().let { rect -> floor((clientY - rect.top) / rect.height * height).toInt() }
+
+    private val JsMouseEvent.mouseEvent: MouseEvent
+        get() = MouseEvent(pixelX, pixelY, this)
 
     fun setPixel(x: Int, y: Int, color: Color)
     {
@@ -56,4 +67,7 @@ class PixelCanvas(
     {
         setPixel(x, y, Color.TRANSPARENT)
     }
+
+    /** Pixel canvas mouse event. Contains the clicked pixel. */
+    data class MouseEvent(val pixelX: Int, val pixelY: Int, val jsEvent: org.w3c.dom.events.MouseEvent)
 }
