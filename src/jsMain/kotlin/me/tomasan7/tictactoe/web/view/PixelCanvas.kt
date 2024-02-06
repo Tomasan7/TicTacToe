@@ -40,11 +40,14 @@ class PixelCanvas(
             throw IllegalArgumentException("Pixel ($x, $y) is out of bounds for canvas ($width, $height)")
 
         val imageData = context.createImageData(1.0, 1.0)
-        val pixelData = imageData.data
-        pixelData[0] = color.red.toByte()
-        pixelData[1] = color.green.toByte()
-        pixelData[2] = color.blue.toByte()
-        pixelData[3] = color.alpha.toByte()
+        /* Using dynamic, because javascript doesn't properly understand types and signedness */
+        /* Without dynamic, it only accepts Byte, which it doesn't properly understand */
+        /* So we convert the value to int, because it just has to look like a positive 0-255 integer */
+        val pixelData = imageData.data.asDynamic()
+        pixelData[0] = color.red.toInt()
+        pixelData[1] = color.green.toInt()
+        pixelData[2] = color.blue.toInt()
+        pixelData[3] = color.alpha.toInt()
         context.putImageData(imageData, x.toDouble(), y.toDouble())
     }
 

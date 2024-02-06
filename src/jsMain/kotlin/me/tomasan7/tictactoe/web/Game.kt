@@ -2,6 +2,7 @@ package me.tomasan7.tictactoe.web
 
 import me.tomasan7.tictactoe.game.GameOptions
 import me.tomasan7.tictactoe.protocol.packet.server.ServerPacket
+import me.tomasan7.tictactoe.util.Color
 import me.tomasan7.tictactoe.web.view.BoardView
 import me.tomasan7.tictactoe.web.view.PlayersView
 
@@ -27,6 +28,16 @@ class Game(
         boardView.drawSymbol(x, y, placer.symbol!!, placer.color!!)
     }
     private var gameState = GameState.WAITING_FOR_PLAYERS
+
+    init
+    {
+        playersView.addPlayer(me)
+        // TODO: REMOVE TEST ONLY
+        me.name = "Tomasan7"
+        me.color = Color.BLUE
+        me.symbol = "101010101"
+        playersView.updatePlayer(me)
+    }
 
     fun receivePacket(serverPacket: ServerPacket)
     {

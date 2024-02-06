@@ -1,6 +1,8 @@
 package me.tomasan7.tictactoe.web.page
 
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.tomasan7.tictactoe.protocol.packet.client.ClientPacket
 import me.tomasan7.tictactoe.protocol.packet.server.ServerPacket
 import me.tomasan7.tictactoe.web.Connection
@@ -16,7 +18,9 @@ abstract class PacketHtmlPage(
         super.enter()
         coroutineScope.launch {
             connection.incomingPackets.collect {
-                onPacket(it)
+                withContext(Dispatchers.Main) {
+                    onPacket(it)
+                }
             }
         }
     }

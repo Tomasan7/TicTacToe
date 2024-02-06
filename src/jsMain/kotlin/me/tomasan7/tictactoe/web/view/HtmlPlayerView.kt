@@ -12,14 +12,20 @@ class HtmlPlayerView(
     override var disconneted: Boolean = false
 ) : PlayerView
 {
-    val element = template.content.cloneNode(true) as HTMLDivElement
-    private val nameElement = element.querySelector(".name") as HTMLElement
-    private val symbolElement = element.querySelector(".symbol") as HTMLCanvasElement
+    val element = template.content.cloneNode(true).asDynamic() /* Cannot be anything else for some reason */
+    private val nameElement = element.querySelector(".player-name") as HTMLElement
+    private val symbolElement = element.querySelector(".player-symbol-canvas") as HTMLCanvasElement
     private val symbolCanvas =
         MonoPixelCanvas(symbolElement, symbolSize, symbolSize, Color.TRANSPARENT, player.color?: Color.BLACK)
 
+    init
+    {
+        update()
+    }
+
     override fun update()
     {
+        element.id = "player-card-${player.id}"
         nameElement.textContent = player.name
         symbolCanvas.onColor = player.color?: Color.BLACK
         player.symbol?.let { symbolCanvas.set(symbolToPixelData(it)) }

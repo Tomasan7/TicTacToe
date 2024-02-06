@@ -3,25 +3,14 @@
     <h1 class="ttt-title title"><span>Tic</span><span>Tac</span><span>Toe</span></h1>
 </header>
 <div id="content">
-    <aside id="players-container">
-        <player-card name="Player #1" symbol="101010101" color="[255, 0, 0]"></player-card>
+    <aside id="player-cards-container">
     </aside>
     <canvas id="game-canvas"></canvas>
 </div>
-<footer>
-    <p>Name: <span id="player-name" class="name">Tomasan7</span></p>
-    <p>Symbol: X <span id="player-symbol" class="symbol"></span></p>
-</footer>
 
 <template id="player-card-template">
-    <h2 class="name"></h2>
-    <canvas class="symbol-canvas"></canvas>
-    <style>
-        :host {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            border: 1px solid #ddd;
-        }
-    </style>
+    <div class="player-card">
+        <h2 class="player-name"></h2>
+        <canvas class="player-symbol-canvas"></canvas>
+    </div>
 </template>

@@ -56,7 +56,7 @@ class WsSession(
             }
 
             _incomingPacketsChannel.send(packet)
-            logger.debug("Received a packet from $remoteHost: '$frameText'")
+            logger.debug("Received a packet from {}: '{}'", remoteHost, packet)
         }
         else
             logger.warn("Received non text frame of type ${incomingFrame.frameType} from $remoteHost")
@@ -68,7 +68,7 @@ class WsSession(
         val frame = Frame.Text(serializedPacket)
         wsSession.send(frame)
 
-        logger.debug("Sending packet to $remoteHost: '$serializedPacket'")
+        logger.debug("Sending packet to {}: '{}'", remoteHost, packet)
     }
 
     override suspend fun close(message: String)

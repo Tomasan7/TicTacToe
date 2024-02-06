@@ -26,7 +26,7 @@ class HtmlPlayersView(
     {
         val playerView = HtmlPlayerView(playerViewTemplateElement, player, symbolSize, false, false)
         playerViews[player] = playerView
-        playersContainer.appendChild(playerView.element.also { it.id = "player-${player.id}" })
+        playersContainer.appendChild(playerView.element)
     }
 
     override fun removePlayer(player: Player)

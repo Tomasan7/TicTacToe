@@ -2,6 +2,9 @@ package me.tomasan7.tictactoe.web
 
 import kotlinx.browser.document
 import kotlinx.browser.window
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import me.tomasan7.tictactoe.protocol.packet.InvalidPacketFormatException
 import me.tomasan7.tictactoe.protocol.packet.InvalidPacketIdException
 import me.tomasan7.tictactoe.protocol.packet.client.ClientPacketSerializer
@@ -47,32 +50,12 @@ class Application : PageChangeHandler
     private fun initSocket()
     {
         val socket = WebSocket(getSocketUrlFromRelativePath("ws"))
-        socket.onmessage = { event ->
-            val frameText = event.data as String
-            try
-            {
-                val packet = serverPacketSerializer.deserializePacket(frameText)
-                receivePacket(packet)
-            }
-            catch (e: InvalidPacketFormatException)
-            {
-                println("Received an invalid packet format: '$frameText'")
-            }
-            catch (e: InvalidPacketIdException)
-            {
-                println("Received a packet with an invalid id: '$frameText'")
-            }
-            catch (e: Exception)
-            {
-                println("Failed to parse packet. ${e.message}: '$frameText'")
+        connection = WsConnection(socket, serverPacketSerializer, clientPacketSerializer)
+        CoroutineScope(Dispatchers.Default).launch {
+            connection.incomingPackets.collect {
+                println("Received packet: $it")
             }
         }
-
-        connection = WsConnection(socket, serverPacketSerializer, clientPacketSerializer)
-    }
-
-    private fun receivePacket(packet: ServerPacket)
-    {
     }
 
     private fun getSocketUrlFromRelativePath(path: String): String

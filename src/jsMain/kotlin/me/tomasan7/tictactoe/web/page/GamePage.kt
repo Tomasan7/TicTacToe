@@ -20,7 +20,7 @@ class GamePage(
     {
         val gameCanvas by htmlMapper.Canvas()
         val playerCardTemplate by htmlMapper.Template()
-        val playersContainer by htmlMapper
+        val playerCardsContainer by htmlMapper
     }
 
     private val gameOptions = initiationPacket.gameOptions
@@ -28,7 +28,7 @@ class GamePage(
     private val boardView =
         CanvasBoardView(elements.gameCanvas, "#000", gameOptions.width, gameOptions.height, gameOptions.symbolSize, 1)
     private val playersView =
-        HtmlPlayersView(initiationPacket.symbolSize, elements.playerCardTemplate, elements.playersContainer)
+        HtmlPlayersView(initiationPacket.symbolSize, elements.playerCardTemplate, elements.playerCardsContainer)
 
     private val game = Game(initiationPacket.playerId, connection, initiationPacket.gameOptions, boardView, playersView)
 

@@ -12,6 +12,7 @@ import me.tomasan7.tictactoe.protocol.packet.client.ClientPacket
 import me.tomasan7.tictactoe.protocol.packet.client.ClientPacketSerializer
 import me.tomasan7.tictactoe.protocol.packet.server.ServerPacket
 import me.tomasan7.tictactoe.protocol.packet.server.ServerPacketSerializer
+import org.w3c.dom.MessageEvent
 import org.w3c.dom.WebSocket
 
 class WsConnection(
@@ -26,7 +27,10 @@ class WsConnection(
 
     init
     {
-        websocket.onmessage = { event ->
+        websocket.onmessage = onmessage@{ event ->
+            if (event.data !is String)
+                return@onmessage println("Received non-string ws message: $event")
+
             val frameText = event.data as String
             try
             {
@@ -42,6 +46,10 @@ class WsConnection(
             catch (e: InvalidPacketIdException)
             {
                 println("Invalid packet id: $frameText")
+            }
+            catch (e: Exception)
+            {
+                println("Failed to parse packet. ${e.message}: '$frameText'")
             }
         }
     }

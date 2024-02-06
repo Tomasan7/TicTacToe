@@ -27,9 +27,20 @@ body
 
 #game-canvas
 {
-    background-color: green;
-    width: 10px;
-    height: 10px;
+    height: 500px;
+}
+
+.player-card
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 1px solid #ddd;
+}
+
+.player-symbol-canvas
+{
+    height: 50px;
 }
 
 footer
