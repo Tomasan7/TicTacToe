@@ -55,6 +55,12 @@ class Color(val value: UInt)
         val BLACK = Color()
         val WHITE = Color(0xFFFFFFFFu)
         val TRANSPARENT = Color(alpha = 0u)
+
+        fun fromCssString(hex: String): Color
+        {
+            val hexValue = "ff" + hex.removePrefix("#") // ff for alpha channel
+            return Color(hexValue.toUInt(16))
+        }
     }
 
     class Serializer : KSerializer<Color>
