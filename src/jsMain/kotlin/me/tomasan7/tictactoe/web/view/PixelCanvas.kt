@@ -85,6 +85,11 @@ class PixelCanvas(
         setPixel(x, y, Color.TRANSPARENT)
     }
 
+    fun clearRectangle(rectX: Int, rectY: Int, rectWidth: Int, rectHeight: Int)
+    {
+        setRectangle(rectX, rectY, Array(rectWidth) { Array(rectHeight) { Color.TRANSPARENT } })
+    }
+
     /** Pixel canvas mouse event. Contains the clicked pixel. */
     data class MouseEvent(val pixelX: Int, val pixelY: Int, val jsEvent: org.w3c.dom.events.MouseEvent)
 }
