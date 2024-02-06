@@ -8,6 +8,8 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
+/* TODO: Consider saving the color as separate ARGB values instead of the single integer value.
+*   And calculate the value instead. */
 /**
  * @constructor The value is in the format 0xAARRGGBB
  */
