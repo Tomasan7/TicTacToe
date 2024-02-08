@@ -56,10 +56,17 @@ class Color(
         val WHITE = Color(0xFFFFFFFFu)
         val TRANSPARENT = Color(alpha = 0u)
 
-        fun fromCssString(hex: String): Color
+        private val CSS_HEX_REGEX = Regex("#[0-9a-fA-F]{6,8}")
+
+        fun fromCssHexString(hex: String): Color
         {
-            val hexValue = "ff" + hex.removePrefix("#") // ff for alpha channel
-            return Color(hexValue.toUInt(16))
+            require(CSS_HEX_REGEX.matches(hex)) { "Invalid CSS hex color string: $hex" }
+            val hexValueStr = hex.removePrefix("#")
+
+            return if (hexValueStr.length == 6)
+                Color((hexValueStr + "ff").toUInt(16))
+            else
+                Color(hexValueStr.toUInt(16))
         }
     }
 
