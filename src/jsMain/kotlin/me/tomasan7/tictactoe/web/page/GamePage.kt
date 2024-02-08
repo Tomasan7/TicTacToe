@@ -3,6 +3,7 @@ package me.tomasan7.tictactoe.web.page
 import me.tomasan7.tictactoe.game.GameOptions
 import me.tomasan7.tictactoe.protocol.packet.server.ServerPacket
 import me.tomasan7.tictactoe.protocol.packet.server.packet.ServerJoinGamePacket
+import me.tomasan7.tictactoe.util.Color
 import me.tomasan7.tictactoe.web.Connection
 import me.tomasan7.tictactoe.web.Game
 import me.tomasan7.tictactoe.web.view.CanvasBoardView
@@ -26,7 +27,7 @@ class GamePage(
     private val gameOptions = initiationPacket.gameOptions
 
     private val boardView =
-        CanvasBoardView(elements.gameCanvas, "#000", gameOptions.width, gameOptions.height, gameOptions.symbolSize, 1)
+        CanvasBoardView(elements.gameCanvas, Color.TRANSPARENT, gameOptions.width, gameOptions.height, gameOptions.symbolSize, 1)
     private val playersView =
         HtmlPlayersView(initiationPacket.symbolSize, elements.playerCardTemplate, elements.playerCardsContainer)
 

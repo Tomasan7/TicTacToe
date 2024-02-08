@@ -1,90 +1,55 @@
 package me.tomasan7.tictactoe.web.view
 
 import me.tomasan7.tictactoe.util.Color
-import org.khronos.webgl.set
-import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
-import org.w3c.dom.ImageData
 
 class CanvasBoardView(
-    private val canvas: HTMLCanvasElement,
-    val gridColor: String,
+    canvas: HTMLCanvasElement,
+    val gridColor: Color,
     val width: Int,
     val height: Int,
     val symbolSize: Int,
     val gridWidth: Int
 ) : BoardView
 {
-    private val context = canvas.getContext("2d") as CanvasRenderingContext2D
+    private val pixelCanvas = PixelCanvas(
+        canvas = canvas,
+        width = width * symbolSize + (width - 1) * gridWidth,
+        height = height * symbolSize + (height - 1) * gridWidth
+    )
 
     init
     {
-        canvas.width = width * symbolSize + (width - 1) * gridWidth
-        canvas.height = height * symbolSize + (height - 1) * gridWidth
-        context.imageSmoothingEnabled = false
-        canvas.style.imageRendering = "pixelated"
         drawGrid()
     }
 
     private fun drawGrid()
     {
-        context.strokeStyle = gridColor
-        context.lineWidth = gridWidth.toDouble()
-
         for (i in 1 until width)
         {
-            val x = i * (symbolSize + gridWidth) - gridWidth / 2
-            context.beginPath()
-            context.moveTo(x.toDouble(), 0.0)
-            context.lineTo(x.toDouble(), canvas.height.toDouble())
-            context.stroke()
+            val x = i * symbolSize + (i - 1) * gridWidth
+            pixelCanvas.setRectangle(x, 0, gridWidth, pixelCanvas.height, gridColor)
         }
 
         for (i in 1 until height)
         {
-            val y = i * (symbolSize + gridWidth) - gridWidth / 2
-            context.beginPath()
-            context.moveTo(0.0, y.toDouble())
-            context.lineTo(canvas.width.toDouble(), y.toDouble())
-            context.stroke()
+            val y = i * symbolSize + (i - 1) * gridWidth
+            pixelCanvas.setRectangle(0, y, pixelCanvas.width, gridWidth, gridColor)
         }
-    }
-
-    fun symbolToImageData(symbol: String, color: Color): ImageData
-    {
-        val imageData = context.createImageData(symbolSize.toDouble(), symbolSize.toDouble())
-        val pixelData = imageData.data
-
-        for ((i, char) in symbol.withIndex())
-        {
-            val pixelIndex = i * 4 // Each pixel has 4 values (R, G, B, A)
-            if (char == '1')
-            {
-                pixelData[0] = color.red.toByte()
-                pixelData[1] = color.green.toByte()
-                pixelData[2] = color.blue.toByte()
-                pixelData[3] = 255.toByte() // Alpha component (fully opaque)
-            }
-            else
-                pixelData[pixelIndex + 3] = 0 // Alpha component (fully transparent)
-        }
-
-        return imageData
-    }
-
-    private fun putImageData(imageData: ImageData, boardX: Int, boardY: Int)
-    {
-        context.putImageData(
-            imagedata = imageData,
-            dx = (boardX * (symbolSize + gridWidth)).toDouble(),
-            dy = (boardY * (symbolSize + gridWidth)).toDouble()
-        )
     }
 
     override fun drawSymbol(x: Int, y: Int, symbol: String, color: Color)
     {
-        val imageData = symbolToImageData(symbol, color)
-        putImageData(imageData, x, y)
+        val pixels = Array(symbolSize) { Array(symbolSize) { Color.TRANSPARENT } }
+
+        for ((i, char) in symbol.withIndex())
+        {
+            val sX = i % symbolSize
+            val sY = i / symbolSize
+            pixels[sX][sY] = if (char == '1') color else Color.TRANSPARENT
+        }
+
+        pixelCanvas.setRectangle(x * (symbolSize + gridWidth), y * (symbolSize + gridWidth), pixels)
     }
 
     override fun drawWinningLine(x1: Int, y1: Int, x2: Int, y2: Int)
