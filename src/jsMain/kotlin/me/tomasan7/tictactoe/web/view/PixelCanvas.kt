@@ -12,7 +12,7 @@ class PixelCanvas(
     val height: Int
 )
 {
-    private val context = canvas.getContext("2d") as CanvasRenderingContext2D
+    val context = canvas.getContext("2d") as CanvasRenderingContext2D
     var onMouseClick: ((MouseEvent) -> Unit)? = null
     var onMouseMove: ((MouseEvent) -> Unit)? = null
     var onMouseDown: ((MouseEvent) -> Unit)? = null

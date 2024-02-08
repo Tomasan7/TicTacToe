@@ -30,6 +30,7 @@ class MonoPixelCanvas(
 
     private val pixelCanvas = PixelCanvas(canvas, width, height)
 
+    val context by pixelCanvas::context
     var onMouseClick by pixelCanvas::onMouseClick
     var onMouseMove by pixelCanvas::onMouseMove
     var onMouseDown by pixelCanvas::onMouseDown
