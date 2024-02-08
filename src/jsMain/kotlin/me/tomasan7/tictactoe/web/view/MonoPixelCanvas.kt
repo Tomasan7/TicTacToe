@@ -40,6 +40,11 @@ class MonoPixelCanvas(
     /** Two-dimensional boolean array indicating off and on pixels. */
     private val pixelData = Array(width) { Array(height) { false } }
 
+    init
+    {
+        redraw()
+    }
+
     private fun checkForBounds(x: Int, y: Int)
     {
         require(x in pixelData.indices || y in pixelData[0].indices) {
@@ -73,6 +78,27 @@ class MonoPixelCanvas(
         for (x in 0 until width)
             for (y in 0 until height)
                 setPixel(x, y, pixelData[x][y])
+    }
+
+    fun setRectangle(rectX: Int, rectY: Int, pixels: Array<Array<Boolean>>)
+    {
+        val rectWidth = pixels.size
+        val rectHeight = pixels[0].size
+
+        require(rectX + rectWidth <= width && rectY + rectHeight <= height) {
+            "Rectangle ($rectX, $rectY) with size ($rectWidth, $rectHeight) is out of bounds for canvas  size (${width}, ${height})"
+        }
+
+        val colorPixels = Array(rectWidth) { Array(rectHeight) { offColor } }
+
+        for (x in 0 until rectWidth)
+            for (y in 0 until rectHeight)
+            {
+                pixelData[x][y] = pixels[x][y]
+                colorPixels[x][y] = if (pixels[x][y]) onColor else offColor
+            }
+
+        pixelCanvas.setRectangle(rectX, rectY, colorPixels)
     }
 
     private fun redraw()
