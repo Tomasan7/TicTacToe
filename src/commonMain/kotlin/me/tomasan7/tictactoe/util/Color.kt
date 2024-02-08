@@ -8,45 +8,43 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-/* TODO: Consider saving the color as separate ARGB values instead of the single integer value.
-*   And calculate the value instead. */
-/**
- * @constructor The value is in the format 0xAARRGGBB
- */
 @Serializable(with = Color.Serializer::class)
-class Color(val value: UInt)
+class Color(
+    val red: UByte = 0u,
+    val green: UByte = 0u,
+    val blue: UByte = 0u,
+    val alpha: UByte = 0xFFu
+)
 {
-    constructor(red: UByte = 0u, green: UByte = 0u, blue: UByte = 0u, alpha: UByte = 0xFFu) :
+    constructor(rgbaValue: UInt) :
             this(
-                (alpha.toUInt() and 0xFFu shl 24)
-                        or (red.toUInt() and 0xFFu shl 16)
-                        or (green.toUInt() and 0xFFu shl 8)
-                        or (blue.toUInt() and 0xFFu)
+                red = ((rgbaValue shr 24) and 0xFFu).toUByte(),
+                green = ((rgbaValue shr 16) and 0xFFu).toUByte(),
+                blue = ((rgbaValue shr 8) and 0xFFu).toUByte(),
+                alpha = (rgbaValue and 0xFFu).toUByte()
             )
 
-    val valueHex by lazy { value.toString(16).padStart(8, '0') }
-    val rgbValueHex by lazy { valueHex.removeRange(0..1) }
+    val rgbaValue by lazy { (red.toUInt() shl 24) or (green.toUInt() shl 16) or (blue.toUInt() shl 8) or alpha.toUInt() }
 
-    val alpha = ((value shr 24) and 0xFFu).toUByte()
-    val red = ((value shr 16) and 0xFFu).toUByte()
-    val green = ((value shr 8) and 0xFFu).toUByte()
-    val blue = (value and 0xFFu).toUByte()
+    val rgbaValueHex by lazy { rgbaValue.toString(16).padStart(8, '0')}
+    val rgbValueHex by lazy { rgbaValueHex.removeRange(0..1) }
 
     fun withRed(red: UByte) = Color(red, green, blue, alpha)
     fun withGreen(green: UByte) = Color(red, green, blue, alpha)
     fun withBlue(blue: UByte) = Color(red, green, blue, alpha)
     fun withAlpha(alpha: UByte) = Color(red, green, blue, alpha)
+
     fun copy(red: UByte = this.red, green: UByte = this.green, blue: UByte = this.blue, alpha: UByte = this.alpha) =
         Color(red, green, blue, alpha)
 
-    override fun hashCode() = value.toInt()
+    override fun hashCode() = rgbaValue.toInt()
 
     override fun equals(other: Any?): Boolean
     {
         if (this === other) return true
         if (other == null || this::class != other::class) return false
         other as Color
-        return value == other.value
+        return rgbaValue == other.rgbaValue
     }
 
     companion object
@@ -71,7 +69,7 @@ class Color(val value: UInt)
 
         override fun serialize(encoder: Encoder, value: Color)
         {
-            encoder.encodeString(value.valueHex)
+            encoder.encodeString(value.rgbaValueHex)
         }
 
         override fun deserialize(decoder: Decoder): Color
