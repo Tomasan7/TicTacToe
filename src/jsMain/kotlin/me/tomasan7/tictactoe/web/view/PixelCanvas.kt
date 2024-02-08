@@ -69,7 +69,7 @@ class PixelCanvas(
         for (y in 0 until rectHeight)
             for (x in 0 until rectWidth)
             {
-                val color = pixels[y][y]
+                val color = pixels[x][y]
                 val index = (y * rectWidth + x) * 4
                 pixelData[index] = color.red.toInt()
                 pixelData[index + 1] = color.green.toInt()
