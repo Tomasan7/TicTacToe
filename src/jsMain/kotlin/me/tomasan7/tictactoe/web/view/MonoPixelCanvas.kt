@@ -102,6 +102,12 @@ class MonoPixelCanvas(
         pixelCanvas.setRectangle(rectX, rectY, colorPixels)
     }
 
+    fun setRectangle(rectX: Int, rectY: Int, rectWidth: Int, rectHeight: Int, value: Boolean)
+    {
+        val pixels = Array(rectWidth) { Array(rectHeight) { value } }
+        setRectangle(rectX, rectY, pixels)
+    }
+
     private fun redraw()
     {
         for (x in 0 until width)

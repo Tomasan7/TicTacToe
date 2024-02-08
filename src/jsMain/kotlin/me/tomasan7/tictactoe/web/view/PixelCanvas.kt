@@ -80,6 +80,16 @@ class PixelCanvas(
         context.putImageData(imageData, rectX.toDouble(), rectY.toDouble())
     }
 
+    fun setRectangle(rectX: Int, rectY: Int, rectWidth: Int, rectHeight: Int, color: Color)
+    {
+        require(rectX + rectWidth <= width && rectY + rectHeight <= height) {
+            "Rectangle ($rectX, $rectY) with size ($rectWidth, $rectHeight) is out of bounds for canvas  size (${width}, ${height})"
+        }
+
+        val pixels = Array(rectWidth) { Array(rectHeight) { color } }
+        setRectangle(rectX, rectY, pixels)
+    }
+
     fun clearPixel(x: Int, y: Int)
     {
         setPixel(x, y, Color.TRANSPARENT)
