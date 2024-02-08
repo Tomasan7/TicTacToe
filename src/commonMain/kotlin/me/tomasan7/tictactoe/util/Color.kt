@@ -47,6 +47,8 @@ class Color(
         return rgbaValue == other.rgbaValue
     }
 
+    override fun toString() = "Color(red=$red, green=$green, blue=$blue, alpha=$alpha)"
+
     companion object
     {
         val RED = Color(red = 0xFFu)
