@@ -76,15 +76,15 @@ Implementation independent protocol (web, desktop, mobile...)
 #### Serialization (MAY CHANGE)
 Currently, they are serialized into a string of the following form:
 ```
-{PACKET_ID}={PACKET_DATA_JSON}
-```
-Or in case of a packet with no data:
-```
-{PACKET_ID}
+PACKET_ID=PACKET_DATA_JSON_STRUCTURE
 ```
 Example ClientJoinGame:
 ```
 12={"gameCode":"123456"}
+```
+Example of packet with no fields:
+```
+PACKET_ID={}
 ```
 
 ### Types
