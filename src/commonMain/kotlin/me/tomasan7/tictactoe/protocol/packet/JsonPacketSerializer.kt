@@ -61,12 +61,12 @@ class JsonPacketSerializer
         packetDataParserMap[packetId] = parserFun
     }
 
-    private fun deserializePacketData(packetClass: KClass<out Packet>, serializedPacket: String): Packet
+    private fun deserializePacketData(packetClass: KClass<out Packet>, serializedPacketData: String): Packet
     {
         val serializer = getSerializableClassSerializer(packetClass)
             ?: throw IllegalArgumentException("No serializer found for ${packetClass.simpleName}")
 
-        return json.decodeFromString(serializer, serializedPacket)
+        return json.decodeFromString(serializer, serializedPacketData)
     }
 
     private fun registerPackets()
