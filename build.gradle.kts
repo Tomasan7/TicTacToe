@@ -60,9 +60,8 @@ kotlin {
             }
         }
 
-        jvmTest {
+        commonTest {
             dependencies {
-                implementation("io.ktor:ktor-server-tests-jvm")
                 implementation(kotlin("test"))
             }
         }
