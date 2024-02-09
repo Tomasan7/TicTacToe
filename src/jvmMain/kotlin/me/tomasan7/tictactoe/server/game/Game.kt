@@ -44,7 +44,10 @@ class Game(val code: String, val options: GameOptions)
             player.sendPacket(serverJoinGamePacket)
             broadcastPacketExcept(ServerAddPlayerPacket(player.id), player)
             for (otherPlayer in playersExcept(player))
+            {
+                player.sendPacket(ServerAddPlayerPacket(otherPlayer.id))
                 player.sendPacket(constructServerSetPlayerDataPacket(otherPlayer))
+            }
             session.incomingPackets.collect { packet ->
                 if (packet !is ClientSession.TerminationPacket)
                     clientPacketHandler.handle(packet, player)
