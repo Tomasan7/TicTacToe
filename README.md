@@ -124,7 +124,7 @@ The server then responds with a [ServerJoinGame](#serverjoingame-3) packet to th
 
 ##### ClientJoinGame (1)
 Joins an existing game with the specified game code.
-The server then responds with a [ServerJoinGame](#server-join-game).
+The server then responds with a [ServerJoinGame](#serverjoingame-3).
 
 | field    | type   | description              |
 |----------|--------|--------------------------|
@@ -236,7 +236,7 @@ Sent to all players when a player is on turn.
 
 ##### ClientPlaceSymbol (13)
 Sent to the server when a player places their symbol on the game area.
-Is confirmed by a [ServerPlaceSymbol](serverplacesymbol-14) packet
+Is confirmed by a [ServerPlaceSymbol](#serverplacesymbol-14) packet
 
 | field | type | description                       |
 |-------|------|-----------------------------------|
