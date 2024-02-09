@@ -1,6 +1,7 @@
 package me.tomasan7.tictactoe.web.page
 
 import me.tomasan7.tictactoe.protocol.packet.client.packet.ClientJoinGamePacket
+import me.tomasan7.tictactoe.protocol.packet.client.packet.ClientJoinRandomGamePacket
 import me.tomasan7.tictactoe.protocol.packet.server.ServerPacket
 import me.tomasan7.tictactoe.protocol.packet.server.packet.ServerJoinGamePacket
 import me.tomasan7.tictactoe.web.Connection
@@ -18,6 +19,7 @@ class HomePage(
     private val elements = object {
         val createGameButton by htmlMapper.Button()
         val joinGameButton by htmlMapper.Button()
+        val joinRandomGameButton by htmlMapper.Button()
         val gameCodeInput by htmlMapper.Input()
     }
 
@@ -28,6 +30,7 @@ class HomePage(
         elements.createGameButton.onclick = { onCreateGameButtonClick() }
         elements.joinGameButton.onclick = { onJoinGameButtonClick() }
         elements.gameCodeInput.oninput = { onGameCodeInput(it) }
+        elements.joinRandomGameButton.onclick = { onJoinRandomGameButtonClick() }
     }
 
     override fun onPacket(packet: ServerPacket)
@@ -51,6 +54,11 @@ class HomePage(
             return
 
         connection.sendPacket(ClientJoinGamePacket(gameCode))
+    }
+
+    private fun onJoinRandomGameButtonClick()
+    {
+        connection.sendPacket(ClientJoinRandomGamePacket)
     }
 
     private fun onGameCodeInput(event: InputEvent)

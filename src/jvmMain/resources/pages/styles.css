@@ -29,6 +29,7 @@ a
     flex-direction: row;
     column-gap: 5px;
     justify-content: space-evenly;
+    align-items: center;
     color: white;
     border-style: none;
     background-color: cornflowerblue;
