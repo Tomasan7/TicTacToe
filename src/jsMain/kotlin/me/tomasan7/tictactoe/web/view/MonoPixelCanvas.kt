@@ -39,7 +39,10 @@ class MonoPixelCanvas(
     var onMouseLeave by pixelCanvas::onMouseLeave
 
     /** Two-dimensional boolean array indicating off and on pixels. */
-    private val pixelData = Array(width) { Array(height) { false } }
+    private val _pixelData = Array(width) { Array(height) { false } }
+    /** Two-dimensional, readonly boolean array indicating off and on pixels. */
+    val pixelData
+        get() = _pixelData.copyOf()
 
     init
     {
@@ -48,15 +51,15 @@ class MonoPixelCanvas(
 
     private fun checkForBounds(x: Int, y: Int)
     {
-        require(x in pixelData.indices || y in pixelData[0].indices) {
-            "Pixel ($x, $y) is out of bounds for canvas (${pixelData.size}, ${pixelData[0].size})"
+        require(x in _pixelData.indices || y in _pixelData[0].indices) {
+            "Pixel ($x, $y) is out of bounds for canvas (${_pixelData.size}, ${_pixelData[0].size})"
         }
     }
 
     fun setPixel(x: Int, y: Int, value: Boolean)
     {
         checkForBounds(x, y)
-        pixelData[x][y] = value
+        _pixelData[x][y] = value
         pixelCanvas.setPixel(x, y, if (value) onColor else offColor)
     }
 
@@ -65,7 +68,7 @@ class MonoPixelCanvas(
     fun getPixel(x: Int, y: Int): Boolean
     {
         checkForBounds(x, y)
-        return pixelData[x][y]
+        return _pixelData[x][y]
     }
 
     operator fun get(x: Int, y: Int) = getPixel(x, y)
@@ -95,7 +98,7 @@ class MonoPixelCanvas(
         for (x in 0 until rectWidth)
             for (y in 0 until rectHeight)
             {
-                pixelData[x][y] = pixels[x][y]
+                _pixelData[x][y] = pixels[x][y]
                 colorPixels[x][y] = if (pixels[x][y]) onColor else offColor
             }
 
@@ -112,6 +115,6 @@ class MonoPixelCanvas(
     {
         for (x in 0 until width)
             for (y in 0 until height)
-                pixelCanvas.setPixel(x, y, if (pixelData[x][y]) onColor else offColor)
+                pixelCanvas.setPixel(x, y, if (_pixelData[x][y]) onColor else offColor)
     }
 }
