@@ -138,6 +138,7 @@ Joins a random public game.
 ##### ServerJoinGame (3)
 Tells the client that he has successfully joined a game.
 Contains the game configuration, so the client can set up the game properly.
+Is followed by a [ServerAddPlayer](#serveraddplayer-4) and [ServerSetPlayerData](#serversetplayerdata-7) packet for each player already in the game.
 
 | field      | type   | description                                                                  |
 |------------|--------|------------------------------------------------------------------------------|
