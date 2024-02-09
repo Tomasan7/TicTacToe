@@ -26,8 +26,8 @@ class HtmlPlayerView(
     override fun update()
     {
         element.id = "player-card-${player.id}"
-        nameElement.textContent = player.name
-        symbolCanvas.onColor = player.color?: Color.BLACK
+        nameElement.textContent = player.name ?: "Player ${player.id}"
+        symbolCanvas.onColor = player.color ?: Color.BLACK
         player.symbol?.let { symbolCanvas.set(symbolToPixelData(it)) }
         // TODO: On turn and disconnected not yet implemented
     }

@@ -1,10 +1,12 @@
 package me.tomasan7.tictactoe.web.view
 
 import me.tomasan7.tictactoe.util.Color
+import me.tomasan7.tictactoe.web.hide
+import me.tomasan7.tictactoe.web.show
 import org.w3c.dom.HTMLCanvasElement
 
 class CanvasBoardView(
-    canvas: HTMLCanvasElement,
+    private val canvas: HTMLCanvasElement,
     val gridColor: Color,
     val width: Int,
     val height: Int,
@@ -61,6 +63,16 @@ class CanvasBoardView(
     {
         /* Color doesn't matter, since the symbol is all empty, resulting in clearing the spot. */
         drawSymbol(x, y, "0".repeat(symbolSize*symbolSize), Color(0u, 0u, 0u))
+    }
+
+    override fun hide()
+    {
+        canvas.hide()
+    }
+
+    override fun show()
+    {
+        canvas.show()
     }
 
     override fun clearBoard()

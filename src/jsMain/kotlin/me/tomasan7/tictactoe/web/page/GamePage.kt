@@ -8,6 +8,7 @@ import me.tomasan7.tictactoe.web.Connection
 import me.tomasan7.tictactoe.web.Game
 import me.tomasan7.tictactoe.web.view.CanvasBoardView
 import me.tomasan7.tictactoe.web.view.HtmlPlayersView
+import me.tomasan7.tictactoe.web.view.PlayerDataHandler
 import org.w3c.dom.HTMLElement
 
 class GamePage(
@@ -22,16 +23,32 @@ class GamePage(
         val gameCanvas by htmlMapper.Canvas()
         val playerCardTemplate by htmlMapper.Template()
         val playerCardsContainer by htmlMapper
+        val playerDataForm by htmlMapper
     }
 
     private val gameOptions = initiationPacket.gameOptions
 
     private val boardView =
-        CanvasBoardView(elements.gameCanvas, Color.TRANSPARENT, gameOptions.width, gameOptions.height, gameOptions.symbolSize, 1)
+        CanvasBoardView(
+            elements.gameCanvas,
+            Color.TRANSPARENT,
+            gameOptions.width,
+            gameOptions.height,
+            gameOptions.symbolSize,
+            1
+        )
     private val playersView =
         HtmlPlayersView(initiationPacket.symbolSize, elements.playerCardTemplate, elements.playerCardsContainer)
+    private val playerDataHandler = PlayerDataHandler(elements.playerDataForm, initiationPacket.symbolSize)
 
-    private val game = Game(initiationPacket.playerId, connection, initiationPacket.gameOptions, boardView, playersView)
+    private val game = Game(
+        initiationPacket.playerId,
+        connection,
+        initiationPacket.gameOptions,
+        boardView,
+        playersView,
+        playerDataHandler
+    )
 
     override fun onPacket(packet: ServerPacket)
     {

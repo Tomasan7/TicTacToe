@@ -1,0 +1,140 @@
+package me.tomasan7.tictactoe.web.view
+
+import me.tomasan7.tictactoe.util.Color
+import me.tomasan7.tictactoe.web.HtmlIdMapper
+import me.tomasan7.tictactoe.web.hide
+import me.tomasan7.tictactoe.web.show
+import org.w3c.dom.HTMLElement
+import kotlin.experimental.and
+
+class PlayerDataHandler(
+    private val playerDataForm: HTMLElement,
+    symbolSize: Int,
+)
+{
+    var onDataChange: (name: String?, color: Color?, symbol: String?) -> Unit = { _, _, _ -> }
+    var onReady: () -> Unit = {}
+
+    private val htmlMapper = HtmlIdMapper(playerDataForm)
+
+    private val elements = object
+    {
+        val playerDataNameInput by htmlMapper.Input()
+        val playerDataColorInput by htmlMapper.Input()
+        val playerDataSymbolInput by htmlMapper.Canvas()
+        val playerReadyButton by htmlMapper.Button()
+        val playerReadyIndicator by htmlMapper
+    }
+
+    private var isReady = false
+
+    private val symbolCanvas = MonoPixelCanvas(
+        canvas = elements.playerDataSymbolInput,
+        width = symbolSize,
+        height = symbolSize,
+        offColor = Color.TRANSPARENT,
+        onColor = Color.fromCssHexString(elements.playerDataColorInput.value)
+    )
+
+    init
+    {
+        initNameInput()
+        initColorInput()
+        initSymbolCanvas()
+        initReadyButton()
+    }
+
+    private fun initReadyButton()
+    {
+        val readyButton = elements.playerReadyButton
+
+        readyButton.onclick = { event ->
+            onReady()
+        }
+    }
+
+    fun setReady(error: String?)
+    {
+        val readyIndicator = elements.playerReadyIndicator
+        if (error == null)
+        {
+            readyIndicator.innerText = "Ready"
+            isReady = true
+        }
+        else
+        {
+            readyIndicator.innerText = error
+            isReady = false
+        }
+    }
+
+    fun hide()
+    {
+        playerDataForm.hide()
+    }
+
+    fun show()
+    {
+        playerDataForm.show()
+    }
+
+    private fun dataChanged(name: String?, color: Color?, symbol: String?)
+    {
+        if (isReady)
+            return
+
+        onDataChange(name, color, symbol)
+    }
+
+    private fun initNameInput()
+    {
+        val nameInput = elements.playerDataNameInput
+        nameInput.oninput = { dataChanged(nameInput.value, null, null) }
+    }
+
+    private fun initColorInput()
+    {
+        val colorInput = elements.playerDataColorInput
+        colorInput.oninput = {
+            symbolCanvas.onColor = Color.fromCssHexString(colorInput.value)
+            dataChanged(null, symbolCanvas.onColor, null)
+        }
+    }
+
+    private fun initSymbolCanvas()
+    {
+        elements.playerDataSymbolInput.oncontextmenu = { event -> event.preventDefault(); false }
+
+        fun symbolClick(x: Int, y: Int, left: Boolean, right: Boolean)
+        {
+            if (right && left)
+                return
+            if (!right && !left)
+                return
+
+            val previousValue = symbolCanvas.pixelData[x][y]
+            val newValue = left
+
+            if (previousValue == newValue)
+                return
+
+            symbolCanvas.setPixel(x, y, newValue)
+            dataChanged(null, null, pixelDataToSymbol(symbolCanvas.pixelData))
+        }
+        symbolCanvas.onMouseMove = onmousemove@{ event ->
+            val left = event.jsEvent.buttons and 1.toShort() == 1.toShort()
+            val right = event.jsEvent.buttons and 2.toShort() == 2.toShort()
+            symbolClick(event.pixelX, event.pixelY, left, right)
+        }
+            symbolCanvas.onMouseDown = onclick@{ event ->
+            val left = event.jsEvent.button in 0.toShort()..1.toShort()
+            val right = event.jsEvent.button == 2.toShort()
+            symbolClick(event.pixelX, event.pixelY, left, right)
+        }
+    }
+
+    private fun pixelDataToSymbol(pixelData: Array<Array<Boolean>>): String
+    {
+        return pixelData.joinToString("") { it.joinToString("") { char -> if (char) "1" else "0" } }
+    }
+}

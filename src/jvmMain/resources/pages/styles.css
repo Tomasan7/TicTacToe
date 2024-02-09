@@ -16,6 +16,12 @@ a
     text-decoration: none;
 }
 
+.hidden
+{
+    display: none;
+}
+
+
 .button
 {
     padding: 8px;
