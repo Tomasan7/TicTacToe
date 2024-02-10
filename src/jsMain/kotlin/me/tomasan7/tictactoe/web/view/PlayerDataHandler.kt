@@ -23,7 +23,7 @@ class PlayerDataHandler(
         val playerDataColorInput by htmlMapper.Input()
         val playerDataSymbolInput by htmlMapper.Canvas()
         val playerReadyButton by htmlMapper.Button()
-        val playerReadyIndicator by htmlMapper
+        val playerReadyError by htmlMapper
     }
 
     private var isReady = false
@@ -32,7 +32,7 @@ class PlayerDataHandler(
             if (value)
             {
                 elements.playerReadyButton.innerText = "Unready"
-                elements.playerReadyIndicator.innerText = ""
+                elements.playerReadyError.innerText = ""
             }
             else
                 elements.playerReadyButton.innerText = "Ready"
@@ -76,7 +76,7 @@ class PlayerDataHandler(
 
     fun setReady(value: Boolean, error: String?)
     {
-        val readyIndicator = elements.playerReadyIndicator
+        val readyIndicator = elements.playerReadyError
         if (value)
         {
             readyIndicator.innerText = "Ready"

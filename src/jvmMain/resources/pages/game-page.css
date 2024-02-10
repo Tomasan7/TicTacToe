@@ -68,7 +68,7 @@ body
     width: 100px;
 }
 
-#player-ready-indicator
+#player-ready-error
 {
     color: indianred;
 }
