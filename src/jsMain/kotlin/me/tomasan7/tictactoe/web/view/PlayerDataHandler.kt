@@ -135,6 +135,13 @@ class PlayerDataHandler(
 
     private fun pixelDataToSymbol(pixelData: Array<Array<Boolean>>): String
     {
-        return pixelData.joinToString("") { it.joinToString("") { char -> if (char) "1" else "0" } }
+        val symbolWidth = pixelData.size
+        val symbolHeight = pixelData[0].size
+
+        return buildString {
+            for (y in 0 ..< symbolHeight)
+                for (x in 0 ..< symbolWidth)
+                    append(if (pixelData[x][y]) '1' else '0')
+        }
     }
 }
