@@ -129,8 +129,16 @@ class Game(val code: String, val options: GameOptions)
         return playerIdMap[id]
     }
 
-    private fun startGame()
+    private fun tryStartGame()
     {
+        if (players.size < 2)
+            return
+
+        val allPlayersReady = players.all { it.ready }
+
+        if (!allPlayersReady)
+            return
+        
         state = GameState.PLAYING
         orderedPlayers = players.shuffled()
         broadcastPacket(ServerStartGamePacket(orderedPlayers.map { it.id }.toTypedArray()))
@@ -196,9 +204,7 @@ class Game(val code: String, val options: GameOptions)
                     player.ready = true
                     player.sendServerPacket(ServerClientReadyAckPacket(true, null))
                     broadcastPacketExcept(ServerPlayerReadyPacket(player.id, true), player)
-                    val allPlayersReady = players.all { it.ready }
-                    if (allPlayersReady)
-                        startGame()
+                        tryStartGame()
                 }
             }
             else
