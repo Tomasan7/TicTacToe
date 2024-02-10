@@ -1,5 +1,6 @@
 package me.tomasan7.tictactoe.web
 
+import kotlinx.browser.window
 import me.tomasan7.tictactoe.game.GameOptions
 import me.tomasan7.tictactoe.protocol.packet.client.packet.ClientPlaceSymbolPacket
 import me.tomasan7.tictactoe.protocol.packet.client.packet.ClientReadyPacket
@@ -82,7 +83,15 @@ class Game(
             is ServerStartGamePacket -> handleServerStartGamePacket(serverPacket)
             is ServerPlayerTurnPacket -> handleServerPlayerTurnPacket(serverPacket)
             is ServerPlaceSymbolPacket -> handleServerPlaceSymbolPacket(serverPacket)
+            is ServerGameEndPacket -> handleServerGameEndPacket(serverPacket)
         }
+    }
+
+    private fun handleServerGameEndPacket(packet: ServerGameEndPacket)
+    {
+        val winner = players[packet.winnerId] ?: return
+
+        window.alert("${winner.name} has won!")
     }
 
     private fun handleServerPlaceSymbolPacket(packet: ServerPlaceSymbolPacket)

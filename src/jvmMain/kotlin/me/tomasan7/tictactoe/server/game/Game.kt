@@ -34,6 +34,7 @@ class Game(val code: String, val options: GameOptions)
         private set
 
     private val board = Array(options.width) { Array<Player?>(options.height) { null } }
+    private val winChecker: WinChecker<Player> = WinCheckerImpl()
 
     fun addNewPlayer(session: ClientSession): Boolean
     {
@@ -100,6 +101,16 @@ class Game(val code: String, val options: GameOptions)
         playerIdMap.remove(player.id)
         coroutineScope.launch {
             broadcastPacket(ServerRemovePlayerPacket(player.id))
+        }
+    }
+
+    fun checkWin(x: Int, y: Int, player: Player)
+    {
+        val winResult = winChecker.checkWin(board, x, y, options.winLength)
+        if (winResult != null && winResult.winner === player)
+        {
+            state = GameState.ENDING
+            broadcastPacket(ServerGameEndPacket(player.id))
         }
     }
 
@@ -178,6 +189,7 @@ class Game(val code: String, val options: GameOptions)
             broadcastPacket(ServerPlaceSymbolPacket(player.id, packet.x, packet.y))
             playerOnTurnIndex = (playerOnTurnIndex + 1) % orderedPlayers.size
             broadcastPacket(ServerPlayerTurnPacket(playerOnTurn.id))
+            checkWin(packet.x, packet.y, player)
         }
 
         private fun handleSetPlayerData(packet: ClientSetPlayerDataPacket, player: Player)
