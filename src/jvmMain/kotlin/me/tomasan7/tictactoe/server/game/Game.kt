@@ -164,6 +164,7 @@ class Game(val code: String, val options: GameOptions)
 
                 val nameSymbolOrColorNotSet = player.name.isNullOrBlank()
                         || player.symbol.isNullOrBlank()
+                        || player.symbol == "0".repeat(options.symbolSize*options.symbolSize) /* Symbol is empty */
                         || player.color == null
 
                 if (nameSymbolOrColorSameAsAnotherReadyPlayer)
