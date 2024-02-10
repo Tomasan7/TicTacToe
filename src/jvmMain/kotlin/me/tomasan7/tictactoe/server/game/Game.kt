@@ -26,7 +26,9 @@ class Game(val code: String, val options: GameOptions)
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
     private val clientPacketHandler = ClientPacketHandler()
-    private lateinit var playerOnTurn: Player
+    private var playerOnTurnIndex: Int = -1
+    private val playerOnTurn: Player
+        get() = orderedPlayers[playerOnTurnIndex]
 
     var state: GameState = GameState.WAITING_FOR_PLAYERS
         private set
@@ -145,7 +147,7 @@ class Game(val code: String, val options: GameOptions)
         state = GameState.PLAYING
         orderedPlayers = players.shuffled()
         broadcastPacket(ServerStartGamePacket(orderedPlayers.map { it.id }.toTypedArray()))
-        playerOnTurn = orderedPlayers.first()
+        playerOnTurnIndex = 0
         broadcastPacket(ServerPlayerTurnPacket(playerOnTurn.id))
     }
 
@@ -174,6 +176,8 @@ class Game(val code: String, val options: GameOptions)
 
             board[packet.x][packet.y] = player
             broadcastPacket(ServerPlaceSymbolPacket(player.id, packet.x, packet.y))
+            playerOnTurnIndex = (playerOnTurnIndex + 1) % orderedPlayers.size
+            broadcastPacket(ServerPlayerTurnPacket(playerOnTurn.id))
         }
 
         private fun handleSetPlayerData(packet: ClientSetPlayerDataPacket, player: Player)
