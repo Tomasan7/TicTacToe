@@ -33,6 +33,7 @@ class Game(
         boardView.drawSymbol(x, y, placer.symbol!!, placer.color!!)
     }
     private var gameState = GameState.WAITING_FOR_PLAYERS
+    private lateinit var playerOnTurn: Player
 
     init
     {
@@ -69,7 +70,16 @@ class Game(
             is ServerSetPlayerDataPacket -> handleServerSetPlayerDataPacket(serverPacket)
             is ServerPlayerReadyPacket -> handleServerPlayerReadyPacket(serverPacket)
             is ServerStartGamePacket -> handleServerStartGamePacket(serverPacket)
+            is ServerPlayerTurnPacket -> handleServerPlayerTurnPacket(serverPacket)
         }
+    }
+
+    private fun handleServerPlayerTurnPacket(packet: ServerPlayerTurnPacket)
+    {
+        val player = playersMeIncluded[packet.playerId] ?: return
+        playerOnTurn = player
+        playerOnTurn.onTurn = true
+        playersView.updatePlayer(player)
     }
 
     private fun handleServerStartGamePacket(packet: ServerStartGamePacket)
