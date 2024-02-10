@@ -1,6 +1,7 @@
 package me.tomasan7.tictactoe.web
 
 import me.tomasan7.tictactoe.game.GameOptions
+import me.tomasan7.tictactoe.protocol.packet.client.packet.ClientPlaceSymbolPacket
 import me.tomasan7.tictactoe.protocol.packet.client.packet.ClientReadyPacket
 import me.tomasan7.tictactoe.protocol.packet.client.packet.ClientSetPlayerDataPacket
 import me.tomasan7.tictactoe.protocol.packet.server.ServerPacket
@@ -29,7 +30,7 @@ class Game(
             boardView.clearSymbol(x, y)
             return@Board
         }
-        val placer = playersMeExcluded[playerId] ?: return@Board
+        val placer = players[playerId] ?: return@Board
         boardView.drawSymbol(x, y, placer.symbol!!, placer.color!!)
     }
     private var gameState = GameState.WAITING_FOR_PLAYERS
@@ -41,6 +42,15 @@ class Game(
         playerDataHandler.show()
         playersView.addPlayer(me)
         initPlayerDataHandler()
+        initBoardView()
+    }
+
+    private fun initBoardView()
+    {
+        boardView.onSpotClick = { x, y ->
+            if (playerOnTurn == me)
+                connection.sendPacket(ClientPlaceSymbolPacket(x, y))
+        }
     }
 
     private fun initPlayerDataHandler()
@@ -71,7 +81,14 @@ class Game(
             is ServerPlayerReadyPacket -> handleServerPlayerReadyPacket(serverPacket)
             is ServerStartGamePacket -> handleServerStartGamePacket(serverPacket)
             is ServerPlayerTurnPacket -> handleServerPlayerTurnPacket(serverPacket)
+            is ServerPlaceSymbolPacket -> handleServerPlaceSymbolPacket(serverPacket)
         }
+    }
+
+    private fun handleServerPlaceSymbolPacket(packet: ServerPlaceSymbolPacket)
+    {
+        val player = players[packet.playerId] ?: return
+        board.setSpot(packet.x, packet.y, player.id)
     }
 
     private fun handleServerPlayerTurnPacket(packet: ServerPlayerTurnPacket)

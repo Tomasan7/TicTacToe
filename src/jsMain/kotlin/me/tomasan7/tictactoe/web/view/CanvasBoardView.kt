@@ -23,6 +23,11 @@ class CanvasBoardView(
     init
     {
         drawGrid()
+        pixelCanvas.onMouseClick = { event ->
+            val spotX = event.pixelX / (symbolSize + gridWidth)
+            val spotY = event.pixelY / (symbolSize + gridWidth)
+            onSpotClick?.invoke(spotX, spotY)
+        }
     }
 
     private fun drawGrid()
@@ -39,6 +44,8 @@ class CanvasBoardView(
             pixelCanvas.setRectangle(0, y, pixelCanvas.width, gridWidth, gridColor)
         }
     }
+
+    override var onSpotClick: ((x: Int, y: Int) -> Unit)? = null
 
     override fun drawSymbol(x: Int, y: Int, symbol: String, color: Color)
     {

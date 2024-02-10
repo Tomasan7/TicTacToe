@@ -17,17 +17,22 @@ class Board(
     fun setSpot(x: Int, y: Int, playerId: Int)
     {
         board[x][y] = playerId
+        updateCallback?.invoke(x, y, playerId)
     }
 
     fun clearSpot(x: Int, y: Int)
     {
         board[x][y] = null
+        updateCallback?.invoke(x, y, null)
     }
 
     fun clearBoard()
     {
         for (x in 0 until width)
             for (y in 0 until height)
+            {
                 clearSpot(x, y)
+                updateCallback?.invoke(x, y, null)
+            }
     }
 }

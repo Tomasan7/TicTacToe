@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import me.tomasan7.tictactoe.game.GameOptions
 import me.tomasan7.tictactoe.protocol.packet.client.ClientPacket
+import me.tomasan7.tictactoe.protocol.packet.client.packet.ClientPlaceSymbolPacket
 import me.tomasan7.tictactoe.protocol.packet.client.packet.ClientReadyPacket
 import me.tomasan7.tictactoe.protocol.packet.client.packet.ClientSetPlayerDataPacket
 import me.tomasan7.tictactoe.protocol.packet.server.ServerPacket
@@ -29,6 +30,8 @@ class Game(val code: String, val options: GameOptions)
 
     var state: GameState = GameState.WAITING_FOR_PLAYERS
         private set
+
+    private val board = Array(options.width) { Array<Player?>(options.height) { null } }
 
     fun addNewPlayer(session: ClientSession): Boolean
     {
@@ -138,7 +141,7 @@ class Game(val code: String, val options: GameOptions)
 
         if (!allPlayersReady)
             return
-        
+
         state = GameState.PLAYING
         orderedPlayers = players.shuffled()
         broadcastPacket(ServerStartGamePacket(orderedPlayers.map { it.id }.toTypedArray()))
@@ -154,7 +157,23 @@ class Game(val code: String, val options: GameOptions)
             {
                 is ClientSetPlayerDataPacket -> handleSetPlayerData(packet, player)
                 is ClientReadyPacket -> handleSetReady(packet, player)
+                is ClientPlaceSymbolPacket -> handlePlaceSymbol(packet, player)
             }
+        }
+
+        private fun handlePlaceSymbol(packet: ClientPlaceSymbolPacket, player: Player)
+        {
+            if (player !== playerOnTurn)
+                return
+
+            if (board[packet.x][packet.y] != null)
+                return
+
+            if (packet.x !in 0..<options.width || packet.y !in 0..<options.height)
+                return
+
+            board[packet.x][packet.y] = player
+            broadcastPacket(ServerPlaceSymbolPacket(player.id, packet.x, packet.y))
         }
 
         private fun handleSetPlayerData(packet: ClientSetPlayerDataPacket, player: Player)
