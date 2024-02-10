@@ -66,8 +66,8 @@ class PixelCanvas(
         val imageData = context.createImageData(rectWidth.toDouble(), rectHeight.toDouble())
         val pixelData = imageData.data.asDynamic()
 
-        for (y in 0 until rectHeight)
-            for (x in 0 until rectWidth)
+        for (x in 0 until rectWidth)
+            for (y in 0 until rectHeight)
             {
                 val color = pixels[x][y]
                 val index = (y * rectWidth + x) * 4
