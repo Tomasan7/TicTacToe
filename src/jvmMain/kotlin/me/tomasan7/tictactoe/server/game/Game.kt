@@ -156,6 +156,9 @@ class Game(val code: String, val options: GameOptions)
 
         private fun handleSetReady(packet: ClientReadyPacket, player: Player)
         {
+            if (player.ready == packet.value)
+                return
+
             if (packet.value)
             {
                 val nameSymbolOrColorSameAsAnotherReadyPlayer = playersExcept(player)
