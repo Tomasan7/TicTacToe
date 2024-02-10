@@ -65,6 +65,12 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
+
+        jvmTest {
+            dependencies {
+                implementation(kotlin("test"))
+            }
+        }
     }
 }
 
