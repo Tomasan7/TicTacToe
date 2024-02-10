@@ -16,6 +16,8 @@ class Game(val code: String, val options: GameOptions)
     private val players: Set<Player>
         get() = playerIdMap.values.toSet()
 
+    private lateinit var orderedPlayers: List<Player>
+
     /** The first connected player is the owner */
     private val ownerPlayer: Player?
         get() = playerIdMap[0]
@@ -23,6 +25,7 @@ class Game(val code: String, val options: GameOptions)
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
     private val clientPacketHandler = ClientPacketHandler()
+    private lateinit var playerOnTurn: Player
 
     var state: GameState = GameState.WAITING_FOR_PLAYERS
         private set
@@ -126,6 +129,15 @@ class Game(val code: String, val options: GameOptions)
         return playerIdMap[id]
     }
 
+    private fun startGame()
+    {
+        state = GameState.PLAYING
+        orderedPlayers = players.shuffled()
+        broadcastPacket(ServerStartGamePacket(orderedPlayers.map { it.id }.toTypedArray()))
+        playerOnTurn = orderedPlayers.first()
+        broadcastPacket(ServerPlayerTurnPacket(playerOnTurn.id))
+    }
+
     private inner class ClientPacketHandler
     {
         fun handle(packet: ClientPacket, player: Player)
@@ -184,6 +196,9 @@ class Game(val code: String, val options: GameOptions)
                     player.ready = true
                     player.sendServerPacket(ServerClientReadyAckPacket(true, null))
                     broadcastPacketExcept(ServerPlayerReadyPacket(player.id, true), player)
+                    val allPlayersReady = players.all { it.ready }
+                    if (allPlayersReady)
+                        startGame()
                 }
             }
             else

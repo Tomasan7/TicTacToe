@@ -31,7 +31,7 @@ class GamePage(
     private val boardView =
         CanvasBoardView(
             elements.gameCanvas,
-            Color.TRANSPARENT,
+            Color.BLACK,
             gameOptions.width,
             gameOptions.height,
             gameOptions.symbolSize,

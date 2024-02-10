@@ -1,5 +1,6 @@
 package me.tomasan7.tictactoe.web.view
 
+import kotlinx.dom.clear
 import me.tomasan7.tictactoe.web.Player
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLTemplateElement
@@ -32,5 +33,13 @@ class HtmlPlayersView(
     override fun removePlayer(player: Player)
     {
         playerViews.remove(player)?.element?.remove()
+    }
+
+    override fun setOrder(players: List<Player>)
+    {
+        val newElements = playersContainer.ownerDocument!!.createDocumentFragment()
+        players.forEach { newElements.appendChild(playerViews[it]!!.element) }
+        playersContainer.clear()
+        playersContainer.appendChild(newElements)
     }
 }

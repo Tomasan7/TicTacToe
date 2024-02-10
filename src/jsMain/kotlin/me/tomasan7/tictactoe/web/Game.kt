@@ -4,10 +4,7 @@ import me.tomasan7.tictactoe.game.GameOptions
 import me.tomasan7.tictactoe.protocol.packet.client.packet.ClientReadyPacket
 import me.tomasan7.tictactoe.protocol.packet.client.packet.ClientSetPlayerDataPacket
 import me.tomasan7.tictactoe.protocol.packet.server.ServerPacket
-import me.tomasan7.tictactoe.protocol.packet.server.packet.ServerAddPlayerPacket
-import me.tomasan7.tictactoe.protocol.packet.server.packet.ServerClientReadyAckPacket
-import me.tomasan7.tictactoe.protocol.packet.server.packet.ServerPlayerReadyPacket
-import me.tomasan7.tictactoe.protocol.packet.server.packet.ServerSetPlayerDataPacket
+import me.tomasan7.tictactoe.protocol.packet.server.packet.*
 import me.tomasan7.tictactoe.util.Color
 import me.tomasan7.tictactoe.web.view.BoardView
 import me.tomasan7.tictactoe.web.view.PlayerDataHandler
@@ -71,6 +68,20 @@ class Game(
             is ServerAddPlayerPacket -> handleServerAddPlayerPacket(serverPacket)
             is ServerSetPlayerDataPacket -> handleServerSetPlayerDataPacket(serverPacket)
             is ServerPlayerReadyPacket -> handleServerPlayerReadyPacket(serverPacket)
+            is ServerStartGamePacket -> handleServerStartGamePacket(serverPacket)
+        }
+    }
+
+    private fun handleServerStartGamePacket(packet: ServerStartGamePacket)
+    {
+        playerDataHandler.hide()
+        boardView.show()
+        val playersOrdered = packet.playerOrder.mapNotNull { playersMeIncluded[it] }
+        playersView.setOrder(playersOrdered)
+        playersMeIncluded.values.forEach {
+            /* Just so the players don't show as ready anymore */
+            it.ready = false
+            playersView.updatePlayer(it)
         }
     }
 

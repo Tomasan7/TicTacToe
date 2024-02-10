@@ -8,4 +8,5 @@ interface PlayersView
     fun updatePlayer(player: Player)
     fun addPlayer(player: Player)
     fun removePlayer(player: Player)
+    fun setOrder(players: List<Player>)
 }
