@@ -48,7 +48,7 @@ class Game(
     private fun initBoardView()
     {
         boardView.onSpotClick = { x, y ->
-            if (playerOnTurn == me)
+            if (playerOnTurn === me)
                 connection.sendPacket(ClientPlaceSymbolPacket(x, y))
         }
     }
