@@ -67,3 +67,8 @@ body
 {
     width: 100px;
 }
+
+.player-ready
+{
+    background-color: #dbdbdb;
+}

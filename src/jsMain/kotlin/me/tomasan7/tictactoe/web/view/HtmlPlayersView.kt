@@ -24,7 +24,7 @@ class HtmlPlayersView(
 
     override fun addPlayer(player: Player)
     {
-        val playerView = HtmlPlayerView(playerViewTemplateElement, player, symbolSize, false, false)
+        val playerView = HtmlPlayerView(playerViewTemplateElement, player, symbolSize)
         playerViews[player] = playerView
         playersContainer.appendChild(playerView.element)
     }

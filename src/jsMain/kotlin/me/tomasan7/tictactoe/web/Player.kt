@@ -7,6 +7,8 @@ data class Player(
     var name: String? = null,
     var symbol: String? = null,
     var color: Color? = null,
+    var ready: Boolean = false,
+    var onTurn: Boolean = false
 )
 {
     override fun hashCode() = id

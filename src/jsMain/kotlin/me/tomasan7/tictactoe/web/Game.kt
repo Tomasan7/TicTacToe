@@ -6,6 +6,7 @@ import me.tomasan7.tictactoe.protocol.packet.client.packet.ClientSetPlayerDataPa
 import me.tomasan7.tictactoe.protocol.packet.server.ServerPacket
 import me.tomasan7.tictactoe.protocol.packet.server.packet.ServerAddPlayerPacket
 import me.tomasan7.tictactoe.protocol.packet.server.packet.ServerClientReadyAckPacket
+import me.tomasan7.tictactoe.protocol.packet.server.packet.ServerPlayerReadyPacket
 import me.tomasan7.tictactoe.protocol.packet.server.packet.ServerSetPlayerDataPacket
 import me.tomasan7.tictactoe.util.Color
 import me.tomasan7.tictactoe.web.view.BoardView
@@ -69,6 +70,17 @@ class Game(
             is ServerClientReadyAckPacket -> handleServerClientReadyAckPacket(serverPacket)
             is ServerAddPlayerPacket -> handleServerAddPlayerPacket(serverPacket)
             is ServerSetPlayerDataPacket -> handleServerSetPlayerDataPacket(serverPacket)
+            is ServerPlayerReadyPacket -> handleServerPlayerReadyPacket(serverPacket)
+        }
+    }
+
+    private fun handleServerPlayerReadyPacket(packet: ServerPlayerReadyPacket)
+    {
+        val player = players[packet.playerId] ?: return
+        if (player.ready != packet.value)
+        {
+            player.ready = packet.value
+            playersView.updatePlayer(player)
         }
     }
 
@@ -90,6 +102,11 @@ class Game(
     private fun handleServerClientReadyAckPacket(packet: ServerClientReadyAckPacket)
     {
         playerDataHandler.setReady(if (packet.value) null else packet.reason)
+        if (me.ready != packet.value)
+        {
+            me.ready = packet.value
+            playersView.updatePlayer(me)
+        }
     }
 
     fun addPlayer(player: Player)

@@ -7,12 +7,10 @@ import org.w3c.dom.*
 class HtmlPlayerView(
     private val template: HTMLTemplateElement,
     private val player: Player,
-    private val symbolSize: Int,
-    override var onTurn: Boolean = false,
-    override var disconneted: Boolean = false
+    private val symbolSize: Int
 ) : PlayerView
 {
-    val element = template.content.cloneNode(true).asDynamic() /* Cannot be anything else for some reason */
+    val element = template.content.cloneNode(true).asDynamic().children[0] as HTMLElement
     private val nameElement = element.querySelector(".player-name") as HTMLElement
     private val symbolElement = element.querySelector(".player-symbol-canvas") as HTMLCanvasElement
     private val symbolCanvas =
@@ -29,7 +27,14 @@ class HtmlPlayerView(
         nameElement.textContent = player.name ?: "Player ${player.id}"
         symbolCanvas.onColor = player.color ?: Color.BLACK
         player.symbol?.let { symbolCanvas.set(symbolToPixelData(it)) }
-        // TODO: On turn and disconnected not yet implemented
+        if (player.ready)
+            element.classList.add("player-ready")
+        else
+            element.classList.remove("player-ready")
+        if (player.onTurn)
+            element.classList.add("player-on-turn")
+        else
+            element.classList.remove("player-on-turn")
     }
 
     private fun symbolToPixelData(symbol: String): Array<Array<Boolean>>
