@@ -36,6 +36,15 @@ class PlayerDataHandler(
         onColor = Color.fromCssHexString(elements.playerDataColorInput.value)
     )
 
+    val name: String
+        get() = elements.playerDataNameInput.value
+
+    val color: Color
+        get() = Color.fromCssHexString(elements.playerDataColorInput.value)
+
+    val symbol: String
+        get() = pixelDataToSymbol(symbolCanvas.pixelData)
+
     init
     {
         initNameInput()
@@ -88,15 +97,13 @@ class PlayerDataHandler(
 
     private fun initNameInput()
     {
-        val nameInput = elements.playerDataNameInput
-        nameInput.oninput = { dataChanged(nameInput.value, null, null) }
+        elements.playerDataNameInput.oninput = { dataChanged(name, null, null) }
     }
 
     private fun initColorInput()
     {
-        val colorInput = elements.playerDataColorInput
-        colorInput.oninput = {
-            symbolCanvas.onColor = Color.fromCssHexString(colorInput.value)
+        elements.playerDataColorInput.oninput = {
+            symbolCanvas.onColor = color
             dataChanged(null, symbolCanvas.onColor, null)
         }
     }
@@ -119,14 +126,14 @@ class PlayerDataHandler(
                 return
 
             symbolCanvas.setPixel(x, y, newValue)
-            dataChanged(null, null, pixelDataToSymbol(symbolCanvas.pixelData))
+            dataChanged(null, null, symbol)
         }
         symbolCanvas.onMouseMove = onmousemove@{ event ->
             val left = event.jsEvent.buttons and 1.toShort() == 1.toShort()
             val right = event.jsEvent.buttons and 2.toShort() == 2.toShort()
             symbolClick(event.pixelX, event.pixelY, left, right)
         }
-            symbolCanvas.onMouseDown = onclick@{ event ->
+        symbolCanvas.onMouseDown = onclick@{ event ->
             val left = event.jsEvent.button in 0.toShort()..1.toShort()
             val right = event.jsEvent.button == 2.toShort()
             symbolClick(event.pixelX, event.pixelY, left, right)
@@ -139,8 +146,8 @@ class PlayerDataHandler(
         val symbolHeight = pixelData[0].size
 
         return buildString {
-            for (y in 0 ..< symbolHeight)
-                for (x in 0 ..< symbolWidth)
+            for (y in 0..<symbolHeight)
+                for (x in 0..<symbolWidth)
                     append(if (pixelData[x][y]) '1' else '0')
         }
     }

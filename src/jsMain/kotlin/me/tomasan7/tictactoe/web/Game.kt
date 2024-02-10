@@ -7,6 +7,7 @@ import me.tomasan7.tictactoe.protocol.packet.server.ServerPacket
 import me.tomasan7.tictactoe.protocol.packet.server.packet.ServerAddPlayerPacket
 import me.tomasan7.tictactoe.protocol.packet.server.packet.ServerClientReadyAckPacket
 import me.tomasan7.tictactoe.protocol.packet.server.packet.ServerSetPlayerDataPacket
+import me.tomasan7.tictactoe.util.Color
 import me.tomasan7.tictactoe.web.view.BoardView
 import me.tomasan7.tictactoe.web.view.PlayerDataHandler
 import me.tomasan7.tictactoe.web.view.PlayersView
@@ -45,13 +46,16 @@ class Game(
 
     private fun initPlayerDataHandler()
     {
-        playerDataHandler.onDataChange = { name, color, symbol ->
+        val onDataChange: (String?, Color?, String?) -> Unit = { name, color, symbol ->
             name?.let { me.name = it }
             color?.let { me.color = it }
             symbol?.let { me.symbol = it }
             playersView.updatePlayer(me)
             connection.sendPacket(ClientSetPlayerDataPacket(name, color, symbol))
         }
+        playerDataHandler.onDataChange = onDataChange
+
+        onDataChange(playerDataHandler.name, playerDataHandler.color, playerDataHandler.symbol)
 
         playerDataHandler.onReady = {
             connection.sendPacket(ClientReadyPacket(true))
