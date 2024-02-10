@@ -5,7 +5,7 @@ import me.tomasan7.tictactoe.util.Color
 
 class Player(private val session: ClientSession, val id: Int)
 {
-    var name: String? = ""
+    var name: String? = null
     var symbol: String? = null
     var color: Color? = null
     var ready: Boolean = false
