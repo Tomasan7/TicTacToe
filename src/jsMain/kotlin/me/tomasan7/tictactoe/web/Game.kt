@@ -58,8 +58,8 @@ class Game(
 
         onDataChange(playerDataHandler.name, playerDataHandler.color, playerDataHandler.symbol)
 
-        playerDataHandler.onReady = {
-            connection.sendPacket(ClientReadyPacket(true))
+        playerDataHandler.onReady = {value ->
+            connection.sendPacket(ClientReadyPacket(value))
         }
     }
 
@@ -101,7 +101,7 @@ class Game(
 
     private fun handleServerClientReadyAckPacket(packet: ServerClientReadyAckPacket)
     {
-        playerDataHandler.setReady(if (packet.value) null else packet.reason)
+        playerDataHandler.setReady(packet.value, packet.reason)
         if (me.ready != packet.value)
         {
             me.ready = packet.value

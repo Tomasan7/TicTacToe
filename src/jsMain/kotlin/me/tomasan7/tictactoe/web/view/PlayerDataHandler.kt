@@ -13,7 +13,7 @@ class PlayerDataHandler(
 )
 {
     var onDataChange: (name: String?, color: Color?, symbol: String?) -> Unit = { _, _, _ -> }
-    var onReady: () -> Unit = {}
+    var onReady: (value: Boolean) -> Unit = {}
 
     private val htmlMapper = HtmlIdMapper(playerDataForm)
 
@@ -70,21 +70,22 @@ class PlayerDataHandler(
         val readyButton = elements.playerReadyButton
 
         readyButton.onclick = { event ->
-            onReady()
+            onReady(!isReady)
         }
     }
 
-    fun setReady(error: String?)
+    fun setReady(value: Boolean, error: String?)
     {
         val readyIndicator = elements.playerReadyIndicator
-        if (error == null)
+        if (value)
         {
             readyIndicator.innerText = "Ready"
             isReady = true
         }
         else
         {
-            readyIndicator.innerText = error
+            if (error != null)
+                readyIndicator.innerText = error
             isReady = false
         }
     }
