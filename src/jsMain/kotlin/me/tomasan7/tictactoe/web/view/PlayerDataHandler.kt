@@ -27,6 +27,18 @@ class PlayerDataHandler(
     }
 
     private var isReady = false
+        set(value)
+        {
+            if (value)
+            {
+                elements.playerReadyButton.innerText = "Unready"
+                elements.playerReadyIndicator.innerText = ""
+            }
+            else
+                elements.playerReadyButton.innerText = "Ready"
+
+            field = value
+        }
 
     private val symbolCanvas = MonoPixelCanvas(
         canvas = elements.playerDataSymbolInput,
