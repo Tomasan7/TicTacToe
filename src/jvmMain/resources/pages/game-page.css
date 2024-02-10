@@ -68,6 +68,11 @@ body
     width: 100px;
 }
 
+#player-ready-indicator
+{
+    color: indianred;
+}
+
 .player-ready
 {
     background-color: #dbdbdb;
