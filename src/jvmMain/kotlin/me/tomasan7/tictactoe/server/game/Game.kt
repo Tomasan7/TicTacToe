@@ -9,7 +9,6 @@ import me.tomasan7.tictactoe.protocol.packet.client.packet.ClientReadyPacket
 import me.tomasan7.tictactoe.protocol.packet.client.packet.ClientSetPlayerDataPacket
 import me.tomasan7.tictactoe.protocol.packet.server.ServerPacket
 import me.tomasan7.tictactoe.protocol.packet.server.packet.*
-import me.tomasan7.tictactoe.util.Color
 
 class Game(val code: String, val options: GameOptions)
 {
@@ -159,15 +158,15 @@ class Game(val code: String, val options: GameOptions)
         {
             if (packet.value)
             {
-                val nameSymbolOrColorSameAsAnotherPlayer = players
-                    .filter { it !== player }
+                val nameSymbolOrColorSameAsAnotherReadyPlayer = playersExcept(player)
+                    .filter { it.ready }
                     .any { nameSymbolOrColorSame(it, player) }
 
                 val nameSymbolOrColorNotSet = player.name.isNullOrBlank()
                         || player.symbol.isNullOrBlank()
                         || player.color == null
 
-                if (nameSymbolOrColorSameAsAnotherPlayer)
+                if (nameSymbolOrColorSameAsAnotherReadyPlayer)
                     player.sendServerPacket(
                         ServerClientReadyAckPacket(
                             false,
