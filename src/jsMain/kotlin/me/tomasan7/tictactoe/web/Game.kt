@@ -94,6 +94,11 @@ class Game(
     private fun handleServerPlayerTurnPacket(packet: ServerPlayerTurnPacket)
     {
         val player = players[packet.playerId] ?: return
+        if (::playerOnTurn.isInitialized)
+        {
+            playerOnTurn.onTurn = false
+            playersView.updatePlayer(playerOnTurn)
+        }
         playerOnTurn = player
         playerOnTurn.onTurn = true
         playersView.updatePlayer(player)
