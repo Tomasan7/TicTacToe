@@ -20,16 +20,16 @@ class Game(
 )
 {
     private val me: Player = Player(meId)
-    private val players = mutableMapOf<Int, Player>()
-    private val playersMeIncluded: Map<Int, Player>
-        get() = players + (me.id to me)
+    private val playersMeExcluded = mutableMapOf<Int, Player>()
+    private val players: Map<Int, Player>
+        get() = playersMeExcluded + (me.id to me)
     private val board = Board(gameOptions.width, gameOptions.height) { x, y, playerId ->
         if (playerId == null)
         {
             boardView.clearSymbol(x, y)
             return@Board
         }
-        val placer = players[playerId] ?: return@Board
+        val placer = playersMeExcluded[playerId] ?: return@Board
         boardView.drawSymbol(x, y, placer.symbol!!, placer.color!!)
     }
     private var gameState = GameState.WAITING_FOR_PLAYERS
@@ -76,7 +76,7 @@ class Game(
 
     private fun handleServerPlayerTurnPacket(packet: ServerPlayerTurnPacket)
     {
-        val player = playersMeIncluded[packet.playerId] ?: return
+        val player = players[packet.playerId] ?: return
         playerOnTurn = player
         playerOnTurn.onTurn = true
         playersView.updatePlayer(player)
@@ -86,9 +86,9 @@ class Game(
     {
         playerDataHandler.hide()
         boardView.show()
-        val playersOrdered = packet.playerOrder.mapNotNull { playersMeIncluded[it] }
+        val playersOrdered = packet.playerOrder.mapNotNull { players[it] }
         playersView.setOrder(playersOrdered)
-        playersMeIncluded.values.forEach {
+        players.values.forEach {
             /* Just so the players don't show as ready anymore */
             it.ready = false
             playersView.updatePlayer(it)
@@ -97,7 +97,7 @@ class Game(
 
     private fun handleServerPlayerReadyPacket(packet: ServerPlayerReadyPacket)
     {
-        val player = players[packet.playerId] ?: return
+        val player = playersMeExcluded[packet.playerId] ?: return
         if (player.ready != packet.value)
         {
             player.ready = packet.value
@@ -107,7 +107,7 @@ class Game(
 
     private fun handleServerSetPlayerDataPacket(packet: ServerSetPlayerDataPacket)
     {
-        val player = players[packet.playerId] ?: return
+        val player = playersMeExcluded[packet.playerId] ?: return
         packet.name?.let { player.name = it }
         packet.color?.let { player.color = it }
         packet.symbol?.let { player.symbol = it }
@@ -132,12 +132,12 @@ class Game(
 
     fun addPlayer(player: Player)
     {
-        players[player.id] = player
+        playersMeExcluded[player.id] = player
         playersView.addPlayer(player)
     }
 
     fun removePlayer(player: Player)
     {
-        players.remove(player.id)
+        playersMeExcluded.remove(player.id)
     }
 }
