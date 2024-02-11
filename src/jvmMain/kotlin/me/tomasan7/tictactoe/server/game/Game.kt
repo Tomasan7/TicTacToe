@@ -178,6 +178,9 @@ class Game(val code: String, val options: GameOptions)
 
         private fun handlePlaceSymbol(packet: ClientPlaceSymbolPacket, player: Player)
         {
+            if (state != GameState.PLAYING)
+                return
+
             if (player !== playerOnTurn)
                 return
 
