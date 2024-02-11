@@ -55,6 +55,8 @@ class Game(val code: String, val options: GameOptions)
             {
                 player.sendPacket(ServerAddPlayerPacket(otherPlayer.id))
                 player.sendPacket(constructServerSetPlayerDataPacket(otherPlayer))
+                if (otherPlayer.ready)
+                    player.sendPacket(ServerPlayerReadyPacket(otherPlayer.id, true))
             }
             session.incomingPackets.collect { packet ->
                 if (packet !is ClientSession.TerminationPacket)
