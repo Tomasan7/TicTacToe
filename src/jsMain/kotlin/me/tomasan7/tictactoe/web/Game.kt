@@ -93,6 +93,8 @@ class Game(
 
         window.alert("${winner.name} has won at between " +
                 "(${packet.winningLineX1},${packet.winningLineY1}) and (${packet.winningLineX2},${packet.winningLineY2})!")
+
+        boardView.drawWinningLine(packet.winningLineX1, packet.winningLineY1, packet.winningLineX2, packet.winningLineY2)
     }
 
     private fun handleServerPlaceSymbolPacket(packet: ServerPlaceSymbolPacket)

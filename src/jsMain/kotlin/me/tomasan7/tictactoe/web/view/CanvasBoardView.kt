@@ -63,8 +63,26 @@ class CanvasBoardView(
 
     override fun drawWinningLine(x1: Int, y1: Int, x2: Int, y2: Int)
     {
-        TODO("Not yet implemented")
+        val x1Center = x1 * (symbolSize + gridWidth) + symbolSize / 2.0
+        val y1Center = y1 * (symbolSize + gridWidth) + symbolSize / 2.0
+        val x2Center = x2 * (symbolSize + gridWidth) + symbolSize / 2.0
+        val y2Center = y2 * (symbolSize + gridWidth) + symbolSize / 2.0
+
+        val context = pixelCanvas.context
+
+        if (x1Center.isWhole())
+            context.lineWidth = 2.0
+        else
+            context.lineWidth = 1.0
+
+        context.strokeStyle = "red"
+        context.beginPath()
+        context.moveTo(x1Center, y1Center)
+        context.lineTo(x2Center, y2Center)
+        context.stroke()
     }
+
+    private fun Double.isWhole() = this == this.toInt().toDouble()
 
     override fun clearSymbol(x: Int, y: Int)
     {
