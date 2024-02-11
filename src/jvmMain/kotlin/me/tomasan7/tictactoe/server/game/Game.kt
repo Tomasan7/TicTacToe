@@ -112,7 +112,7 @@ class Game(val code: String, val options: GameOptions)
         if (winResult != null && winResult.winner === player)
         {
             state = GameState.ENDING
-            broadcastPacket(ServerGameEndPacket(player.id))
+            broadcastPacket(ServerPlayerWinPacket(player.id, winResult.x1, winResult.y1, winResult.x2, winResult.y2))
         }
     }
 

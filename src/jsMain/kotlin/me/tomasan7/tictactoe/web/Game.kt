@@ -83,15 +83,16 @@ class Game(
             is ServerStartGamePacket -> handleServerStartGamePacket(serverPacket)
             is ServerPlayerTurnPacket -> handleServerPlayerTurnPacket(serverPacket)
             is ServerPlaceSymbolPacket -> handleServerPlaceSymbolPacket(serverPacket)
-            is ServerGameEndPacket -> handleServerGameEndPacket(serverPacket)
+            is ServerPlayerWinPacket -> handleServerPlayerWinPacket(serverPacket)
         }
     }
 
-    private fun handleServerGameEndPacket(packet: ServerGameEndPacket)
+    private fun handleServerPlayerWinPacket(packet: ServerPlayerWinPacket)
     {
         val winner = players[packet.winnerId] ?: return
 
-        window.alert("${winner.name} has won!")
+        window.alert("${winner.name} has won at between " +
+                "(${packet.winningLineX1},${packet.winningLineY1}) and (${packet.winningLineX2},${packet.winningLineY2})!")
     }
 
     private fun handleServerPlaceSymbolPacket(packet: ServerPlaceSymbolPacket)

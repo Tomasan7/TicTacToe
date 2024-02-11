@@ -255,12 +255,16 @@ Is also sent to the placer, so they know their placement is valid and acknowledg
 | x        | int  | the x coordinate of the placed symbol |
 | y        | int  | the y coordinate of the placed symbol |
 
-##### ServerGameEnd (15)
-Sent to all players when the game ends. Either by a player winning, or by a draw.
+##### ServerPlayerWin (15)
+Sent to all players when the game ends by a player winning.
 
-| field    | type | description                                                    |
-|----------|------|----------------------------------------------------------------|
-| winnerId | int? | id of the winning player. Missing when the game ends in a draw |
+| field     | type | description                                       |
+|-----------|------|---------------------------------------------------|
+| winnerId  | int  | id of the winning player                          |
+| winLineX1 | int  | the x coordinate of the start of the winning line |
+| winLineY1 | int  | the y coordinate of the start of the winning line |
+| winLineX2 | int  | the x coordinate of the end of the winning line   |
+| winLineY2 | int  | the y coordinate of the end of the winning line   |
 
 ##### ServerGameClose (16)
 Sent to all players when the game has closed, so the clients should transition from the game.

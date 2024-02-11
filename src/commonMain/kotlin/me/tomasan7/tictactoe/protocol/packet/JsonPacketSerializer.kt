@@ -83,7 +83,7 @@ class JsonPacketSerializer
         registerPacket(ServerAddPlayerPacket.PACKET_ID, ServerAddPlayerPacket::class)
         registerPacket(ServerClientReadyAckPacket.PACKET_ID, ServerClientReadyAckPacket::class)
         registerPacket(ServerGameClosePacket.PACKET_ID, ServerGameClosePacket::class)
-        registerPacket(ServerGameEndPacket.PACKET_ID, ServerGameEndPacket::class)
+        registerPacket(ServerPlayerWinPacket.PACKET_ID, ServerPlayerWinPacket::class)
         registerPacket(ServerJoinGamePacket.PACKET_ID, ServerJoinGamePacket::class)
         registerPacket(ServerPlaceSymbolPacket.PACKET_ID, ServerPlaceSymbolPacket::class)
         registerPacket(ServerPlayerReadyPacket.PACKET_ID, ServerPlayerReadyPacket::class)
