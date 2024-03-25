@@ -15,13 +15,15 @@ import kotlin.reflect.full.declaredMemberProperties
 fun Application.configureRouting()
 {
     routing {
-        staticResources("/static/", "/pages/")
-        staticResources("/frontend/", "/frontend/")
+        route("tictactoe") {
+            staticResources("/static/", "/pages/")
+            staticResources("/frontend/", "/frontend/")
 
-        protocolDebugger()
+            protocolDebugger()
 
-        get("/") {
-            call.respondTemplate("index.ftlh")
+            get("/") {
+                call.respondTemplate("index.ftlh")
+            }
         }
     }
 }
@@ -67,7 +69,8 @@ private fun getClientPacketFields(clientPacketClass: KClass<out ClientPacket>): 
 
 private fun getClientPacketId(clientPacketClass: KClass<out ClientPacket>): Int?
 {
-    return clientPacketClass.companionObject?.declaredMemberProperties?.find { it.name == "PACKET_ID" }?.call(clientPacketClass.companionObjectInstance) as? Int
+    return clientPacketClass.companionObject?.declaredMemberProperties?.find { it.name == "PACKET_ID" }
+        ?.call(clientPacketClass.companionObjectInstance) as? Int
 }
 
 private fun getClientPacketsInPackage(packageName: String): Iterable<KClass<out ClientPacket>>

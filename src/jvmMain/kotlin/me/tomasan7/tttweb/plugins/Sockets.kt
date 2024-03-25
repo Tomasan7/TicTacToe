@@ -23,7 +23,7 @@ fun Application.configureSockets()
     val sessionManager = SessionManager(GameManager())
 
     routing {
-        webSocket("/ws") {
+        webSocket("tictactoe/ws") {
             val jsonPacketSerializer = JsonPacketSerializer()
             val session = WsSession(
                 this,

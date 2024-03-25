@@ -244,7 +244,7 @@ class Game(val code: String, val options: GameOptions)
                     player.ready = true
                     player.sendServerPacket(ServerClientReadyAckPacket(true, null))
                     broadcastPacketExcept(ServerPlayerReadyPacket(player.id, true), player)
-                        tryStartGame()
+                    tryStartGame()
                 }
             }
             else

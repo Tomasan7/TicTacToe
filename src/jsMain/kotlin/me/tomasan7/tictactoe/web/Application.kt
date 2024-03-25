@@ -49,7 +49,7 @@ class Application : PageChangeHandler
 
     private fun initSocket()
     {
-        val socket = WebSocket(getSocketUrlFromRelativePath("ws"))
+        val socket = WebSocket(getSocketUrlFromRelativePath("tictactoe/ws"))
         connection = WsConnection(socket, serverPacketSerializer, clientPacketSerializer)
         CoroutineScope(Dispatchers.Default).launch {
             connection.incomingPackets.collect {
